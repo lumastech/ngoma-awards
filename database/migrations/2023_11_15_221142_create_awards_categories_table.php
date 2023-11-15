@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('awards_categories', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->foreignId('award_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

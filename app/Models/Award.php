@@ -10,7 +10,7 @@ class Award extends Model
     use HasFactory;
 
     public function categories()
-{
-    return $this->hasMany(AwardsCategory::class, 'award_id');
-}
+    {
+        return $this->hasMany(AwardsCategory::class, 'award_id');
+    }
 }
