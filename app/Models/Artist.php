@@ -9,6 +9,12 @@ class Artist extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'awards_category_id',
+    ];
+
+
     public function awardsCategory()
     {
         return $this->belongsTo(AwardsCategory::class, 'awards_category_id');

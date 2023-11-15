@@ -9,6 +9,12 @@ class AwardsCategory extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'award_id',
+    ];
+
+
     public function award()
     {
         return $this->belongsTo(Award::class, 'award_id');
