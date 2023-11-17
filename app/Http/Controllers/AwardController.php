@@ -12,7 +12,9 @@ class AwardController extends Controller
      */
     public function index()
     {
-        //
+        $awards = Award::paginate(10);
+
+        return render('awards.index', compact('awards'));
     }
 
     /**
@@ -28,7 +30,16 @@ class AwardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validate the request...
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $award = Award::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('awards.index')->with('success', 'Award created successfully.');
     }
 
     /**
@@ -36,7 +47,10 @@ class AwardController extends Controller
      */
     public function show(Award $award)
     {
-        //
+        //  return inertia view
+        return Inertia::render('Award/show', [
+            'award' => $award,
+        ]);
     }
 
     /**
@@ -44,7 +58,10 @@ class AwardController extends Controller
      */
     public function edit(Award $award)
     {
-        //
+        // return inertia view
+        return Inertia::render('Award/edit', [
+            'award' => $award,
+        ]);
     }
 
     /**
@@ -52,7 +69,18 @@ class AwardController extends Controller
      */
     public function update(Request $request, Award $award)
     {
-        //
+        // validate request
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        // update award
+        $award->update([
+            'name' => $request->name,
+        ]);
+
+        // return inertia view
+        return redirect()->route('awards.index')->with('success', 'Award updated successfully.');
     }
 
     /**
@@ -60,6 +88,7 @@ class AwardController extends Controller
      */
     public function destroy(Award $award)
     {
-        //
+        // delete award
+        $award->delete();
     }
 }

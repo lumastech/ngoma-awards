@@ -35,6 +35,13 @@ class ArtistController extends Controller
             'name' => 'required|string|max:255',
             'awards_category_id' => 'required',
         ]);
+
+        $artist = Artist::create([
+            'name' => $request->name,
+            'awards_category_id' => $request->awards_category_id,
+        ]);
+
+        return redirect()->route('artists.index')->with('success', 'Artist created successfully.');
     }
 
     /**
@@ -42,7 +49,14 @@ class ArtistController extends Controller
      */
     public function show(Artist $artist)
     {
-        //
+
+        if (!$artist) {
+            return redirect()->route('artists.index')->with('error', 'Artist not found.');
+        }
+        // return inertia view
+        return Inertia::render('Artist/show', [
+            'artist' => $artist,
+        ]);
     }
 
     /**
@@ -50,7 +64,13 @@ class ArtistController extends Controller
      */
     public function edit(Artist $artist)
     {
-        //
+        if (!$artist) {
+            return redirect()->route('artists.index')->with('error', 'Artist not found.');
+        }
+        // return inertia view
+        return Inertia::render('Artist/edit', [
+            'artist' => $artist,
+        ]);
     }
 
     /**
@@ -58,7 +78,20 @@ class ArtistController extends Controller
      */
     public function update(Request $request, Artist $artist)
     {
-        //
+        // validate request
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'awards_category_id' => 'required',
+        ]);
+
+        // update artist
+        $artist->update([
+            'name' => $request->name,
+            'awards_category_id' => $request->awards_category_id,
+        ]);
+
+        // return inertia view
+        return redirect()->route('artists.index')->with('success', 'Artist updated successfully.');
     }
 
     /**
@@ -66,6 +99,7 @@ class ArtistController extends Controller
      */
     public function destroy(Artist $artist)
     {
-        //
+        // delete artist
+        $artist->delete();
     }
 }

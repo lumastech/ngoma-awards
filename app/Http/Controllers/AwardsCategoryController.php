@@ -12,7 +12,12 @@ class AwardsCategoryController extends Controller
      */
     public function index()
     {
-        //
+        // awards category with pagination 15
+        $awardsCategories = AwardsCategory::paginate(15);
+        // return inertia view
+        return Inertia::render('AwardsCategory/index', [
+            'awardsCategories' => $awardsCategories,
+        ]);
     }
 
     /**
@@ -20,7 +25,9 @@ class AwardsCategoryController extends Controller
      */
     public function create()
     {
-        //
+        //  return inertia view
+        return Inertia::render('AwardsCategory/create');
+
     }
 
     /**
@@ -28,7 +35,20 @@ class AwardsCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validate request
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'award_id' => 'required',
+        ]);
+
+        // create awards category
+        $awardsCategory = AwardsCategory::create([
+            'name' => $request->name,
+            'award_id' => $request->award_id,
+        ]);
+
+        // return inertia view
+        return redirect()->route('awards-categories.index')->with('success', 'Awards Category created successfully.');
     }
 
     /**
@@ -36,7 +56,10 @@ class AwardsCategoryController extends Controller
      */
     public function show(AwardsCategory $awardsCategory)
     {
-        //
+        // return inertia view
+        return Inertia::render('AwardsCategory/show', [
+            'awardsCategory' => $awardsCategory,
+        ]);
     }
 
     /**
@@ -44,7 +67,10 @@ class AwardsCategoryController extends Controller
      */
     public function edit(AwardsCategory $awardsCategory)
     {
-        //
+        // return inertia view
+        return Inertia::render('AwardsCategory/edit', [
+            'awardsCategory' => $awardsCategory,
+        ]);
     }
 
     /**
@@ -52,7 +78,20 @@ class AwardsCategoryController extends Controller
      */
     public function update(Request $request, AwardsCategory $awardsCategory)
     {
-        //
+        // validate request
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'award_id' => 'required',
+        ]);
+
+        // update awards category
+        $awardsCategory->update([
+            'name' => $request->name,
+            'award_id' => $request->award_id,
+        ]);
+
+        // return inertia view
+        return redirect()->route('awards-categories.index')->with('success', 'Awards Category updated successfully.');
     }
 
     /**
@@ -60,6 +99,9 @@ class AwardsCategoryController extends Controller
      */
     public function destroy(AwardsCategory $awardsCategory)
     {
-        //
+        // delete awards category
+        $awardsCategory->delete();
+        // return inertia view
+        return redirect()->route('awards-categories.index')->with('success', 'Awards Category deleted successfully.');
     }
 }
