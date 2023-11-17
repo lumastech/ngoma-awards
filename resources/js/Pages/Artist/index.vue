@@ -31,7 +31,7 @@
                             <button @click="editArtist(artist.name, artist.awards_category.id, artist.id)" class="p-2 text-sky-500">
                                 <i class="fa-solid fa-edit"></i>
                             </button>
-                            <button @click="deleteItem = true" class="p-2 text-red-500">
+                            <button @click="showDeleteItem(true, artist)" class="p-2 text-red-500">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </td>
@@ -72,7 +72,7 @@
 
 
     <!-- confirm dialog -->
-    <ConfirmationModal :show="deleteItem" :closeable="true">
+    <ConfirmationModal :show="deleteDialog" :closeable="true">
         <template v-slot:title>
             <h4>Delete Artist</h4>
         </template>
@@ -80,6 +80,8 @@
             <p>Are you sure you want to delete this artist?</p>
         </template>
         <template v-slot:footer>
+            <button @click="deleteDialog = false" class="text-gray-500 hover:bg-primary-100 px-4 rounded transition">Cancel</button>
+            <button @click="deleteItem" class="border border-primary-400 rounded placeholder-gray-400 bg-primary-500 text-white px-4 py-2 shadow-md hover:bg-primary-600 transition">Delete</button>
             <!-- <Link :href="route('artists.destroy', artist)" method="delete" class="text-red-500" as="button" type="button">
                 <i class="fa-solid fa-trash-can"></i>
             </Link> -->
@@ -114,7 +116,7 @@ export default {
 
         const showArtistModal = ref(false);
         const editting = ref(false);
-        const deleteItem = ref(false);
+        const deleteDialog = ref(false);
 
         const editArtist = (name, awards_category_id, id) => {
             artist.name = name;
@@ -151,10 +153,34 @@ export default {
                 },
             });
         };
+
+
+        const deleteItem = () => {
+            artist.delete(route('artists.destroy', artist), {
+                onSuccess: () => {
+                    artist.reset();
+                    editting.value = false;
+                    deleteDialog.value = false;
+                },
+            });
+        };
+
+        const showDeleteItem = (action = false, item = null) => {
+            if (action) {
+                artist.name = item.name;
+                artist.awards_category_id = item.awards_category_id;
+                artist.id = item.id;
+                deleteDialog.value = action;
+                return;
+            }
+            deleteDialog.value = action;
+        }
         const confirm = () => window.confirm('Are you sure you want to delete this artist?');
 
         return {
             confirm, artist, submit, showArtistModal, editting, editArtist, updateArtist, artistCreate, deleteItem,
+            showDeleteItem,
+            deleteDialog,
         }
     }
 };
