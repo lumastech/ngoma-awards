@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\AwardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,4 +43,5 @@ Route::middleware([
 
     Route::resource('users', UserController::class);
     Route::resource('artists', ArtistController::class);
+    Route::resource('awards', AwardController::class);
 });

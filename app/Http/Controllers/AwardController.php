@@ -13,9 +13,9 @@ class AwardController extends Controller
      */
     public function index()
     {
-        $awards = Award::paginate(10);
+        $awards = Award::with('categories')->paginate(20);
 
-        return render('awards.index', compact('awards'));
+        return Inertia::render('Award/index', compact('awards'));
     }
 
     /**
@@ -40,7 +40,7 @@ class AwardController extends Controller
             'name' => $request->name,
         ]);
 
-        return redirect()->route('awards.index')->with('success', 'Award created successfully.');
+        return redirect()->back()->with('success', 'Award created successfully.');
     }
 
     /**
@@ -81,7 +81,7 @@ class AwardController extends Controller
         ]);
 
         // return inertia view
-        return redirect()->route('awards.index')->with('success', 'Award updated successfully.');
+        return redirect()->back()->with('success', 'Award updated successfully.');
     }
 
     /**
