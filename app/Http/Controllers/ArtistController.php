@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Artist;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Models\AwardsCategory;
 
 class ArtistController extends Controller
 {
@@ -13,8 +15,9 @@ class ArtistController extends Controller
     public function index()
     {
         $artists = Artist::paginate(10);
+        $award_categories = AwardsCategory::all();
 
-        return render('artists.index', compact('artists'));
+        return Inertia::render('Artist/index', compact('artists', 'award_categories'));
     }
 
     /**
@@ -22,7 +25,7 @@ class ArtistController extends Controller
      */
     public function create()
     {
-        return render('artists.create');
+        return Inertia::render('Artist/create');
     }
 
     /**
@@ -41,7 +44,7 @@ class ArtistController extends Controller
             'awards_category_id' => $request->awards_category_id,
         ]);
 
-        return redirect()->route('artists.index')->with('success', 'Artist created successfully.');
+        return redirect()->route('Artist/index')->with('success', 'Artist created successfully.');
     }
 
     /**
@@ -51,7 +54,7 @@ class ArtistController extends Controller
     {
 
         if (!$artist) {
-            return redirect()->route('artists.index')->with('error', 'Artist not found.');
+            return redirect()->route('Artist/index')->with('error', 'Artist not found.');
         }
         // return inertia view
         return Inertia::render('Artist/show', [

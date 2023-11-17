@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Award;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AwardController extends Controller
 {

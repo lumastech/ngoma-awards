@@ -42,7 +42,6 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'role' => 'required|string',
             'phone' => 'required|string',
-            'station' => 'required|string',
             'address' => 'required|string',
             'status' => 'required|string',
         ]);
@@ -58,7 +57,6 @@ class UserController extends Controller
             'role' => $request->role,
             'phone' => $request->phone,
             'password' => bcrypt($password),
-            'station' => $request->station,
             'address' => $request->address,
             'status' => $request->status,
         ]);
@@ -107,7 +105,6 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
             'role' => 'required|string',
             'phone' => 'required|string',
-            'station' => 'required|string',
             'address' => 'required|string',
             'status' => 'required|string',
         ]);
@@ -120,7 +117,6 @@ class UserController extends Controller
             'email' => $request->email,
             'role' => $request->role,
             'phone' => $request->phone,
-            'station' => $request->station,
             'address' => $request->address,
             'status' => $request->status,
         ]);

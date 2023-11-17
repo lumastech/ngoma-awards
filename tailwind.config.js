@@ -10,6 +10,7 @@ export default {
         "./storage/framework/views/*.php",
         "./resources/views/**/*.blade.php",
         "./resources/js/**/*.vue",
+        "./node_modules/tw-elements/dist/js/**/*.js",
     ],
 
     theme: {
@@ -34,6 +35,6 @@ export default {
             },
         },
     },
-
+    darkMode: "class",
     plugins: [forms, typography],
 };
