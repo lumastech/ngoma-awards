@@ -14,7 +14,7 @@ class ArtistController extends Controller
      */
     public function index()
     {
-        $artists = Artist::paginate(10);
+        $artists = Artist::with('awardsCategory')->paginate(10);
         $award_categories = AwardsCategory::all();
 
         return Inertia::render('Artist/index', compact('artists', 'award_categories'));
@@ -44,7 +44,7 @@ class ArtistController extends Controller
             'awards_category_id' => $request->awards_category_id,
         ]);
 
-        return redirect()->route('Artist/index')->with('success', 'Artist created successfully.');
+        return redirect()>back()->with('success', 'Artist created successfully.');
     }
 
     /**

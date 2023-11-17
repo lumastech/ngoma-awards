@@ -3,12 +3,9 @@
     <div class="max-w-7xl mx-auto px-2">
         <div class="flex justify-between gap-4 mb-4 place-items-center">
             <h2>STAFFS</h2>
-            <button @click="showArtistModal = true" class="rounded bg-primary-500 text-white hover:bg-primary-600 transition border border-primary-500 px-4 py-2">
+            <button @click="artistCreate" class="rounded bg-primary-500 text-white hover:bg-primary-600 transition border border-primary-500 px-4 py-2">
                 <i class="fa-solid fa-plus"></i> <span>Add An Artist</span>
             </button>
-            <!-- <Link :href="route('artists.create')" class="rounded bg-primary-500 text-white hover:bg-primary-600 transition border border-primary-500 px-4 py-2">
-                <i class="fa-solid fa-plus"></i> <span>Add An Artist</span>
-            </Link> -->
         </div>
 
         <div class="shadow rounded bg-white p-2">
@@ -24,31 +21,19 @@
                 <tbody class="text-gray-500">
                     <tr v-for="artist in artists.data" :key="artist.id" class="hover:bg-gray-50 transition">
                         <td class="border-b border-gray-200 px-2 py-1">
-                            <i class="fa-solid fa-artist"></i>
+                            <i class="fa-solid fa-user"></i>
                         </td>
                         <td class="border-b border-gray-200 px-2 py-1 text-left">{{ artist.name }}</td>
                         <td class="border-b border-gray-200 px-2 py-1 text-left">
-                            <a href="mailto:m@d.c">{{ artist.award_category }}</a>
+                            <a href="mailto:m@d.c">{{ artist.awards_category.name }}</a>
                         </td>
                         <td class="border-b border-gray-200 px-2 py-1 text-right">
-                            <Link :href="route('artists.edit', artist.id)" class="p-2 text-sky-500">
+                            <button @click="editArtist(artist.name, artist.awards_category.id, artist.id)" class="p-2 text-sky-500">
                                 <i class="fa-solid fa-edit"></i>
-                            </Link>
-                            <Link :href="route('artists.destroy', artist.id)" method="delete" class="text-red-500" as="button" type="button" :onBefore="confirm" >
+                            </button>
+                            <button @click="deleteItem = true" class="p-2 text-red-500">
                                 <i class="fa-solid fa-trash-can"></i>
-                            </Link>
-
-                            <ConfirmationModal :show="0" >
-                                <template v-slot:title>
-                                    <h4>Confirm action</h4>
-                                </template>
-                                <template v-slot:content>
-                                    <p>Are you sure you want to delete this artist?</p>
-                                </template>
-                                <template v-slot:footer>
-                                    <button @click="close" class="text-gray-500 hover:bg-primary-100 px-4 rounded transition">Cancel</button>
-                                </template>
-                            </ConfirmationModal>
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -62,7 +47,7 @@
             <h4>Add an artist</h4>
         </template>
         <template v-slot:content>
-            <form @submit.prevent="submit" action="#" method="post" class="grid grid-cols-2 gap-4 bg-white rounded-md p-4">
+            <form @submit.prevent="submit" action="#" method="post" class="grid md:grid-cols-2 gap-4 bg-white rounded-md p-4">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" v-model="artist.name" class="block border border-primary-400 rounded placeholder-gray-400 w-full" placeholder="James Phiri">
@@ -70,25 +55,42 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="award_category">Award Category</label>
-                    <select name="award_category" v-model="artist.award_category" id="award_category" class="block border border-primary-400 rounded placeholder-gray-400 w-full">
+                    <label for="awards_category_id">Award Category</label>
+                    <select name="awards_category_id" v-model="artist.awards_category_id" id="awards_category_id" class="block border border-primary-400 rounded placeholder-gray-400 w-full">
                         <option v-for="award_category in award_categories" :key="award_category.id" :value="award_category.id">{{ award_category.name }}</option>
                     </select>
-                    <span v-if="errors.award_category" class="text-red-500">{{ errors.award_category }}</span>
+                    <span v-if="errors.awards_category_id" class="text-red-500">{{ errors.awards_category_id }}</span>
                 </div>
             </form>
         </template>
         <template v-slot:footer>
             <button @click="showArtistModal = false" class="text-gray-500 hover:bg-primary-100 px-4 rounded transition">Cancel</button>
-            <button class="border border-primary-400 rounded placeholder-gray-400 bg-primary-500 text-white px-4 py-2 shadow-md hover:bg-primary-600 transition">Submit</button>
+            <button v-if="!editting" @click="submit" class="border border-primary-400 rounded placeholder-gray-400 bg-primary-500 text-white px-4 py-2 shadow-md hover:bg-primary-600 transition">Submit</button>
+            <button v-if="editting" @click="updateArtist" class="border border-primary-400 rounded placeholder-gray-400 bg-primary-500 text-white px-4 py-2 shadow-md hover:bg-primary-600 transition">Update</button>
         </template>
     </DialogModal>
+
+
+    <!-- confirm dialog -->
+    <ConfirmationModal :show="deleteItem" :closeable="true">
+        <template v-slot:title>
+            <h4>Delete Artist</h4>
+        </template>
+        <template v-slot:content>
+            <p>Are you sure you want to delete this artist?</p>
+        </template>
+        <template v-slot:footer>
+            <!-- <Link :href="route('artists.destroy', artist)" method="delete" class="text-red-500" as="button" type="button">
+                <i class="fa-solid fa-trash-can"></i>
+            </Link> -->
+        </template>
+    </ConfirmationModal>
 </template>
 
 <script>
 import DashboardLaout from '@/Layouts/DashboardLayout.vue';
-import { reactive, ref } from 'vue';
-import { Link, Head } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import { Link, Head, useForm } from '@inertiajs/vue3';
 import ConfirmationModal from '@/Components/ConfirmationModal.vue';
 import DialogModal from '@/Components/DialogModal.vue';
 
@@ -105,22 +107,54 @@ export default {
     },
     layout: DashboardLaout,
     setup() {
-        const artist = reactive({
+        const artist = useForm({
             name: '',
-            award_category: '',
+            awards_category_id: '',
         });
+
         const showArtistModal = ref(false);
+        const editting = ref(false);
+        const deleteItem = ref(false);
+
+        const editArtist = (name, awards_category_id, id) => {
+            artist.name = name;
+            artist.awards_category_id = awards_category_id;
+            artist.id = id;
+            console.log(artist.id);
+            showArtistModal.value = true;
+            editting.value = true;
+        }
+
+        const artistCreate = () => {
+            artist.name = '';
+            artist.awards_category_id = '';
+            artist.id = '';
+            showArtistModal.value = true;
+            editting.value = false;
+        }
+
         const submit = () => {
             artist.post(route('artists.store'), {
                 onSuccess: () => {
                     artist.reset();
+                    editting.value = false;
+                    showArtistModal.value = false;
+                },
+            });
+        };
+        const updateArtist = () => {
+            artist.put(route('artists.update', artist), {
+                onSuccess: () => {
+                    artist.reset();
+                    editting.value = false;
+                    showArtistModal.value = false;
                 },
             });
         };
         const confirm = () => window.confirm('Are you sure you want to delete this artist?');
 
         return {
-            confirm, artist, submit, showArtistModal,
+            confirm, artist, submit, showArtistModal, editting, editArtist, updateArtist, artistCreate, deleteItem,
         }
     }
 };
