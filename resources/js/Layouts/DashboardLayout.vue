@@ -7,29 +7,21 @@
                         <i class="fa-solid fa-home w-7 mr-3"></i>
                         Dashboard
                     </a>
-                    <a href="/user" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
+                    <a href="/users" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
                         <i class="fa-solid fa-user w-7 mr-3"></i>
                         Users
                     </a>
-                    <a href="/ticket" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
+                    <a href="/artists" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
                         <i class="fa-solid fa-ticket w-7 mr-3"></i>
-                        Tickets
+                        Artists
                     </a>
-                    <a href="/insurance" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
+                    <a href="/awards" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
+                        <i class="fa-solid fa-ticket w-7 mr-3"></i>
+                        Awards
+                    </a>
+                    <a href="/awards/categories" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
                         <i class="fa-solid fa-file-invoice-dollar w-7 mr-3"></i>
-                        Insurance
-                    </a>
-                    <a href="/station" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
-                        <i class="fa-solid fa-bus w-7 mr-3"></i>
-                        Stations
-                    </a>
-                    <a href="/vehicle" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
-                        <i class="fa-solid fa-bus w-7 mr-3"></i>
-                        Buses
-                    </a>
-                    <a href="/route" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
-                        <i class="fa-solid fa-bus w-7 mr-3"></i>
-                        Routes
+                        Award Categories
                     </a>
                 </nav>
             </aside>
