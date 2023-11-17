@@ -19,7 +19,7 @@
                         <i class="fa-solid fa-ticket w-7 mr-3"></i>
                         Awards
                     </a>
-                    <a href="/awards/categories" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
+                    <a href="/categories" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
                         <i class="fa-solid fa-file-invoice-dollar w-7 mr-3"></i>
                         Award Categories
                     </a>

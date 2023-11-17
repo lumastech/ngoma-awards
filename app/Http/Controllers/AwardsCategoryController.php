@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AwardsCategory;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Award;
 
 class AwardsCategoryController extends Controller
 {
@@ -14,10 +15,12 @@ class AwardsCategoryController extends Controller
     public function index()
     {
         // awards category with pagination 15
-        $awardsCategories = AwardsCategory::paginate(15);
+        $categories = AwardsCategory::with('award')->with('artists')->paginate(15);
+        $awards = Award::all();
         // return inertia view
-        return Inertia::render('AwardsCategory/index', [
-            'awardsCategories' => $awardsCategories,
+        return Inertia::render('Award/Category/index', [
+            'categories' => $categories,
+            'awards' => $awards,
         ]);
     }
 
@@ -49,7 +52,7 @@ class AwardsCategoryController extends Controller
         ]);
 
         // return inertia view
-        return redirect()->route('awards-categories.index')->with('success', 'Awards Category created successfully.');
+        return redirect()->back()->with('success', 'Awards Category created successfully.');
     }
 
     /**
@@ -92,7 +95,7 @@ class AwardsCategoryController extends Controller
         ]);
 
         // return inertia view
-        return redirect()->route('awards-categories.index')->with('success', 'Awards Category updated successfully.');
+        return redirect()->back()->with('success', 'Awards Category updated successfully.');
     }
 
     /**
@@ -100,9 +103,10 @@ class AwardsCategoryController extends Controller
      */
     public function destroy(AwardsCategory $awardsCategory)
     {
+        // dd($awardsCategory->id);
         // delete awards category
         $awardsCategory->delete();
         // return inertia view
-        return redirect()->route('awards-categories.index')->with('success', 'Awards Category deleted successfully.');
+        return redirect()->back()->with('success', 'Awards Category deleted successfully.');
     }
 }
