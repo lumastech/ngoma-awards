@@ -19,4 +19,9 @@ class Artist extends Model
     {
         return $this->belongsTo(AwardsCategory::class, 'awards_category_id');
     }
+
+    public function votes()
+    {
+        return $this->hasMany(Vote::class, 'artists_id');
+    }
 }
