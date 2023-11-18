@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Award;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -26,6 +27,23 @@ class UssdController extends Controller
             $amount = 2.00;
             $currency = "ZMW";
             $token = env('YOUR_TOKEN_HERE'); // Replace with your actual token environment variable
+
+            $awards = Award::all();
+
+            $menu_options = [
+                '1' => 'Enter 1 to play Zipezemo Game show. \n',
+            ];
+
+            foreach ($awards as $award) {
+                $menu_options[] = $award->id . '.' . ' ' . $award->name . ' ' . "\n";
+            }
+
+            $response_msg = 'Welcome to millennium TV to participate on the following programs: \n';
+                foreach ($menu_options as $key => $value) {
+                    $response_msg .= "{$key}. {$value}\n";
+                }
+
+            dd($response_msg);
 
             if ($request->query('RequestType') === "2") {
 
@@ -56,6 +74,7 @@ class UssdController extends Controller
                     '1' => 'Enter 1 to play Zipezemo Game show. \n',
                 ];
 
+
                 $response_msg = 'Welcome to millennium TV to participate on the following programs: \n';
                 foreach ($menu_options as $key => $value) {
                     $response_msg .= "{$key}. {$value}\n";
@@ -75,7 +94,7 @@ class UssdController extends Controller
         }
 
         return response()->json([
-            'message' => 'Hello, world!'
+            'message' => 'Sorry there was an issue on the server. Try again later.'
         ]);
     }
 
