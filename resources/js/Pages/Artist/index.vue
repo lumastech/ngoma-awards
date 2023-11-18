@@ -87,6 +87,8 @@
             </Link> -->
         </template>
     </ConfirmationModal>
+
+    <Loader :loader="artist.processing" />
 </template>
 
 <script>
@@ -122,7 +124,6 @@ export default {
             artist.name = name;
             artist.awards_category_id = awards_category_id;
             artist.id = id;
-            console.log(artist.id);
             showArtistModal.value = true;
             editting.value = true;
         }

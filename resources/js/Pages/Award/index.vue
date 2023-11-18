@@ -75,6 +75,7 @@
             </Link> -->
         </template>
     </ConfirmationModal>
+    <Loader :loader="award.processing" />
 </template>
 
 <script>

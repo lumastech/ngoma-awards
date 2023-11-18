@@ -33,6 +33,16 @@ Route::get('/', function () {
     return Inertia::render('Auth/Login');
 })->name('home');
 
+// register
+Route::get('/register', function () {
+    return redirect()->route('login');
+})->name('register');
+Route::post('/register', function () {
+    return redirect()->route('login');
+})->name('register');
+
+
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

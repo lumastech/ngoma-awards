@@ -84,6 +84,7 @@
             <button @click="deleteItem" class="border border-primary-400 rounded placeholder-gray-400 bg-primary-500 text-white px-4 py-2 shadow-md hover:bg-primary-600 transition">Delete</button>
         </template>
     </ConfirmationModal>
+    <Loader :loader="category.processing" />
 </template>
 
 <script>
