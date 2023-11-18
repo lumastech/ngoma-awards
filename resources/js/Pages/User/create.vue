@@ -10,7 +10,7 @@
     </div>
 
     <!-- create user form -->
-    <form @submit.prevent="submit" action="#" method="post" class="grid grid-cols-2 gap-4 bg-white rounded-md p-4">
+    <form @submit.prevent="submit" action="#" method="post" class="grid md:grid-cols-2 gap-4 bg-white rounded-md p-4">
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" v-model="form.name" class="block border border-primary-400 rounded placeholder-gray-400 w-full" placeholder="James Phiri">
@@ -58,8 +58,8 @@
         </div>
         <button class="block border border-primary-400 rounded placeholder-gray-400 w-full bg-primary-500 text-white px-4 py-2 shadow-md hover:bg-primary-600 transition">Submit</button>
     </form>
-
 </div>
+<Loader :loader="form.processing" />
 </template>
 
 <script>

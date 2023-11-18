@@ -20,7 +20,7 @@ export default {
             },
             colors: {
                 // orange color shades
-                primary: {
+                orange: {
                     50: "#fff7f0",
                     100: "#ffeedb",
                     200: "#ffdcb2",
@@ -31,6 +31,19 @@ export default {
                     700: "#bf7428",
                     800: "#995b21",
                     900: "#7d4c1d",
+                },
+                // sky color shades
+                primary: {
+                    50: "#f6faff",
+                    100: "#edf5ff",
+                    200: "#d3e4ff",
+                    300: "#b9d2ff",
+                    400: "#7faeff",
+                    500: "#468bff",
+                    600: "#3f7de6",
+                    700: "#3568bf",
+                    800: "#2b5399",
+                    900: "#23447d",
                 },
             },
         },

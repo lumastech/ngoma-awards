@@ -29,12 +29,6 @@
                 <div class="flex justify-between p-4 mb-4 place-items-center border-b">
                     <h2 class="text-gray-500">DASHBOARD</h2>
                     <div class="flex space-x-4">
-                        <div class="hidden md:flex rounded-md border border-primary-400 bg-white overflow-hidden">
-                            <input type="search" name="search" id="search" class="border-0 bg-none" placeholder="Search">
-                            <button class="px-2 border-l bg-primary-50 hover:bg-primary-500 hover:text-white text-primary-500 transition">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                        </div>
                         <p class="rounded-full p-2 bg-primary-50 border border-primary-400 w-10 h-10 flex place-items-center justify-center text-primary-500 ">
                             <i class="fa-solid fa-user"></i>
                         </p>
@@ -48,14 +42,13 @@
                         </button>
                     </div>
                 </div>
-                <div class="pt-10 h-full w-full overflow-auto md:pb-32">
+                <div class="pt-10 h-full w-full overflow-auto pb-32 md:pb-32">
                     <slot></slot>
                 </div>
             </main>
         </div>
     </div>
 </template>
-
 <script>
 import { Link } from '@inertiajs/vue3'
 export default {

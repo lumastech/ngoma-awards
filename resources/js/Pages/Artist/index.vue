@@ -1,11 +1,14 @@
 <template>
     <Head title="artists" />
     <div class="max-w-7xl mx-auto px-2">
-        <div class="flex justify-between gap-4 mb-4 place-items-center">
+        <div class="md:flex justify-between gap-4 mb-4 place-items-center">
             <h2>ARTISTS</h2>
-            <button @click="artistCreate" class="rounded bg-primary-500 text-white hover:bg-primary-600 transition border border-primary-500 px-4 py-2">
-                <i class="fa-solid fa-plus"></i> <span>Add An Artist</span>
-            </button>
+            <div class="flex gap-2">
+                <Search :uri="uri" @res="(res) =>searchResponse(res)" class="flex" />
+                <button @click="artistCreate" class="rounded bg-primary-500 text-white hover:bg-primary-600 transition border border-primary-500 px-2 md:px-4 py-2">
+                    <i class="fa-solid fa-plus"></i> <span>Add Artist</span>
+                </button>
+            </div>
         </div>
 
         <div class="shadow rounded bg-white p-2">
@@ -15,18 +18,18 @@
                         <th class="border-b border-gray-200 px-2 py-1"></th>
                         <th class="border-b border-gray-200 px-2 py-1 text-left">Name</th>
                         <th class="border-b border-gray-200 px-2 py-1 text-left">Award Category</th>
+                        <th class="border-b border-gray-200 px-2 py-1 text-left">Votes</th>
                         <th class="border-b border-gray-200 px-2 py-1 text-right">Action</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-500">
-                    <tr v-for="artist in artists.data" :key="artist.id" class="hover:bg-gray-50 transition">
+                    <tr v-for="artist in searcing? searchData.data : artists.data" :key="artist.id" class="hover:bg-gray-50 transition">
                         <td class="border-b border-gray-200 px-2 py-1">
                             <i class="fa-solid fa-user"></i>
                         </td>
                         <td class="border-b border-gray-200 px-2 py-1 text-left">{{ artist.name }}</td>
-                        <td class="border-b border-gray-200 px-2 py-1 text-left">
-                            <a href="mailto:m@d.c">{{ artist.awards_category.name }}</a>
-                        </td>
+                        <td class="border-b border-gray-200 px-2 py-1 text-left">{{ artist.awards_category.name }}</td>
+                        <td class="border-b border-gray-200 px-2 py-1 text-left">{{ artist.votes_count }}</td>
                         <td class="border-b border-gray-200 px-2 py-1 text-right">
                             <button @click="editArtist(artist.name, artist.awards_category.id, artist.id)" class="p-2 text-sky-500">
                                 <i class="fa-solid fa-edit"></i>
@@ -87,6 +90,8 @@
             </Link> -->
         </template>
     </ConfirmationModal>
+
+    <Loader :loader="artist.processing" />
 </template>
 
 <script>
@@ -95,20 +100,25 @@ import { ref } from 'vue';
 import { Link, Head, useForm } from '@inertiajs/vue3';
 import ConfirmationModal from '@/Components/ConfirmationModal.vue';
 import DialogModal from '@/Components/DialogModal.vue';
+import Search from '@/Components/Search.vue';
 
 export default {
     components: {
     DashboardLaout, Link, Head,
         ConfirmationModal,
         DialogModal,
+        Search,
 },
     props: {
         artists: Object,
         errors: Object,
         award_categories: Object,
+        uri: String
     },
     layout: DashboardLaout,
     setup() {
+        const searchData = ref(null);
+        const searcing = ref(false);
         const artist = useForm({
             name: '',
             awards_category_id: '',
@@ -122,7 +132,6 @@ export default {
             artist.name = name;
             artist.awards_category_id = awards_category_id;
             artist.id = id;
-            console.log(artist.id);
             showArtistModal.value = true;
             editting.value = true;
         }
@@ -136,6 +145,10 @@ export default {
         }
 
         const submit = () => {
+            if (editting.value) {
+                updateArtist();
+                return;
+            }
             artist.post(route('artists.store'), {
                 onSuccess: () => {
                     artist.reset();
@@ -175,12 +188,17 @@ export default {
             }
             deleteDialog.value = action;
         }
-        const confirm = () => window.confirm('Are you sure you want to delete this artist?');
+
+        const searchResponse = (res) => {
+            searchData.value = res;
+            console.log(searchData.value)
+            searcing.value = true;
+        }
 
         return {
             confirm, artist, submit, showArtistModal, editting, editArtist, updateArtist, artistCreate, deleteItem,
             showDeleteItem,
-            deleteDialog,
+            deleteDialog, editting, searchResponse, searchData, searcing
         }
     }
 };

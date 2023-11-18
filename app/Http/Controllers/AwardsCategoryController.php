@@ -18,7 +18,7 @@ class AwardsCategoryController extends Controller
         $categories = AwardsCategory::with('award')->with('artists')->paginate(15);
         $awards = Award::all();
         // return inertia view
-        return Inertia::render('Award/Category/index', [
+        return Inertia::render('Category/index', [
             'categories' => $categories,
             'awards' => $awards,
         ]);
@@ -30,7 +30,7 @@ class AwardsCategoryController extends Controller
     public function create()
     {
         //  return inertia view
-        return Inertia::render('AwardsCategory/create');
+        return Inertia::render('Category/create');
 
     }
 
@@ -61,7 +61,7 @@ class AwardsCategoryController extends Controller
     public function show(AwardsCategory $awardsCategory)
     {
         // return inertia view
-        return Inertia::render('AwardsCategory/show', [
+        return Inertia::render('Category/show', [
             'awardsCategory' => $awardsCategory,
         ]);
     }
@@ -72,7 +72,7 @@ class AwardsCategoryController extends Controller
     public function edit(AwardsCategory $awardsCategory)
     {
         // return inertia view
-        return Inertia::render('AwardsCategory/edit', [
+        return Inertia::render('Category/edit', [
             'awardsCategory' => $awardsCategory,
         ]);
     }
@@ -80,7 +80,7 @@ class AwardsCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AwardsCategory $awardsCategory)
+    public function update(Request $request, $awardsCategory)
     {
         // validate request
         $request->validate([
@@ -88,8 +88,12 @@ class AwardsCategoryController extends Controller
             'award_id' => 'required',
         ]);
 
+        $category = AwardsCategory::where('id', $awardsCategory)->first();
+        if(!$category){
+            return redirect()->back()->with('error', 'Awards Category not found.');
+        }
         // update awards category
-        $awardsCategory->update([
+        $category->update([
             'name' => $request->name,
             'award_id' => $request->award_id,
         ]);
@@ -101,11 +105,14 @@ class AwardsCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AwardsCategory $awardsCategory)
+    public function destroy($awardsCategory)
     {
-        // dd($awardsCategory->id);
+        $category = AwardsCategory::where('id', $awardsCategory)->first();
+        if(!$category){
+            return redirect()->back()->with('error', 'Awards Category not found.');
+        }
         // delete awards category
-        $awardsCategory->delete();
+        $category->delete();
         // return inertia view
         return redirect()->back()->with('success', 'Awards Category deleted successfully.');
     }

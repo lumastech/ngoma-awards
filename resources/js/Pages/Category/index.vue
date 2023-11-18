@@ -28,7 +28,7 @@
                         <td class="border-b border-gray-200 px-2 py-1 text-left">{{ category.artist }}</td>
                         <td class="border-b border-gray-200 px-2 py-1 text-left">{{ category.award.name }}</td>
                         <td class="border-b border-gray-200 px-2 py-1 text-right">
-                            <button @click="editArtist(category.name, category.award.id, category.id)" class="p-2 text-sky-500">
+                            <button @click="editArtist(category)" class="p-2 text-sky-500">
                                 <i class="fa-solid fa-edit"></i>
                             </button>
                             <button @click="showDeleteItem(true, category)" class="p-2 text-red-500">
@@ -50,13 +50,14 @@
             <form @submit.prevent="submit" action="#" method="post" class="grid md:grid-cols-2 gap-4 bg-white rounded-md p-4">
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" v-model="category.name" class="block border border-primary-400 rounded placeholder-gray-400 w-full" placeholder="James Phiri">
+                    <input type="text" v-model="category.name" class="block border border-primary-400 rounded placeholder-gray-400 w-full" placeholder="Category 1">
                     <span v-if="errors.name" class="text-red-500">{{ errors.name }}</span>
                 </div>
 
                 <div class="form-group">
                     <label for="award_id">Award Category</label>
                     <select name="award_id" v-model="category.award_id" id="award_id" class="block border border-primary-400 rounded placeholder-gray-400 w-full">
+                        <option value="" disabled>Select Award</option>
                         <option v-for="award in awards" :key="award.id" :value="award.id">{{ award.name }}</option>
                     </select>
                     <span v-if="errors.award_id" class="text-red-500">{{ errors.award_id }}</span>
@@ -84,6 +85,7 @@
             <button @click="deleteItem" class="border border-primary-400 rounded placeholder-gray-400 bg-primary-500 text-white px-4 py-2 shadow-md hover:bg-primary-600 transition">Delete</button>
         </template>
     </ConfirmationModal>
+    <Loader :loader="category.processing" />
 </template>
 
 <script>
@@ -116,34 +118,18 @@ export default {
         const editting = ref(false);
         const deleteDialog = ref(false);
 
-        const editArtist = (name, award_id, id) => {
-            category.name = name;
-            category.award_id = award_id;
-            category.id = id;
-            console.log(category.id);
+        const editArtist = (item) => {
+            category.name =item.name
+            category.award_id = item.award_id
+            category.id = item.id
+            console.log('cat', category.id);
             showArtistModal.value = true;
             editting.value = true;
         }
 
-        const artistCreate = () => {
-            category.name = '';
-            category.award_id = '';
-            category.id = '';
-            showArtistModal.value = true;
-            editting.value = false;
-        }
-
-        const submit = () => {
-            category.post(route('categories.store'), {
-                onSuccess: () => {
-                    category.reset();
-                    editting.value = false;
-                    showArtistModal.value = false;
-                },
-            });
-        };
         const updateArtist = () => {
-            category.put(route('categories.update', category), {
+            console.log(category)
+            category.put(route('categories.update', category.id), {
                 onSuccess: () => {
                     category.reset();
                     editting.value = false;
@@ -162,6 +148,29 @@ export default {
                 },
             });
         };
+
+        const artistCreate = () => {
+            category.name = '';
+            category.award_id = '';
+            category.id = '';
+            showArtistModal.value = true;
+            editting.value = false;
+        }
+
+        const submit = () => {
+            if (editting.value) {
+                updateArtist();
+                return;
+            }
+            category.post(route('categories.store'), {
+                onSuccess: () => {
+                    category.reset();
+                    editting.value = false;
+                    showArtistModal.value = false;
+                },
+            });
+        };
+
 
         const showDeleteItem = (action = false, item = null) => {
             if (action) {
