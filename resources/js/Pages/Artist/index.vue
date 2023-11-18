@@ -3,9 +3,16 @@
     <div class="max-w-7xl mx-auto px-2">
         <div class="flex justify-between gap-4 mb-4 place-items-center">
             <h2>ARTISTS</h2>
-            <button @click="artistCreate" class="rounded bg-primary-500 text-white hover:bg-primary-600 transition border border-primary-500 px-4 py-2">
-                <i class="fa-solid fa-plus"></i> <span>Add An Artist</span>
-            </button>
+            <div class="flex gap-2">
+                <Search :uri="uri" @res="(res) =>searchResponse(res)" class="hidden md:flex" />
+                <button @click="artistCreate" class="rounded bg-primary-500 text-white hover:bg-primary-600 transition border border-primary-500 px-4 py-2">
+                    <i class="fa-solid fa-plus"></i> <span>Add An Artist</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="md:hidden">
+            <Search :uri="uri" @res="(res) =>searchResponse(res)" class="flex" />
         </div>
 
         <div class="shadow rounded bg-white p-2">
@@ -20,7 +27,7 @@
                     </tr>
                 </thead>
                 <tbody class="text-gray-500">
-                    <tr v-for="artist in artists.data" :key="artist.id" class="hover:bg-gray-50 transition">
+                    <tr v-for="artist in searcing? searchData.data : artists.data" :key="artist.id" class="hover:bg-gray-50 transition">
                         <td class="border-b border-gray-200 px-2 py-1">
                             <i class="fa-solid fa-user"></i>
                         </td>
@@ -97,20 +104,25 @@ import { ref } from 'vue';
 import { Link, Head, useForm } from '@inertiajs/vue3';
 import ConfirmationModal from '@/Components/ConfirmationModal.vue';
 import DialogModal from '@/Components/DialogModal.vue';
+import Search from '@/Components/Search.vue';
 
 export default {
     components: {
     DashboardLaout, Link, Head,
         ConfirmationModal,
         DialogModal,
+        Search,
 },
     props: {
         artists: Object,
         errors: Object,
         award_categories: Object,
+        uri: String
     },
     layout: DashboardLaout,
     setup() {
+        const searchData = ref(null);
+        const searcing = ref(false);
         const artist = useForm({
             name: '',
             awards_category_id: '',
@@ -176,12 +188,17 @@ export default {
             }
             deleteDialog.value = action;
         }
-        const confirm = () => window.confirm('Are you sure you want to delete this artist?');
+
+        const searchResponse = (res) => {
+            searchData.value = res;
+            console.log(searchData.value)
+            searcing.value = true;
+        }
 
         return {
             confirm, artist, submit, showArtistModal, editting, editArtist, updateArtist, artistCreate, deleteItem,
             showDeleteItem,
-            deleteDialog,
+            deleteDialog, editting, searchResponse, searchData, searcing
         }
     }
 };

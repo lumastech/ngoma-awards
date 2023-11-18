@@ -92,4 +92,22 @@ class AwardController extends Controller
         // delete award
         $award->delete();
     }
+
+
+    // search awards
+    public function search(Request $request)
+    {
+        // get search term
+        $searchTerm = $request->input('search');
+
+        if($searchTerm == ''){
+            $awards = Award::with('categories')->paginate(20);
+        }
+
+        // search the awards
+        $awards = Award::where('name', 'LIKE', "%{$searchTerm}%")->paginate(20);
+
+        // return json
+        return response()->json($awards);
+    }
 }

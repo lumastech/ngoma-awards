@@ -29,12 +29,6 @@
                 <div class="flex justify-between p-4 mb-4 place-items-center border-b">
                     <h2 class="text-gray-500">DASHBOARD</h2>
                     <div class="flex space-x-4">
-                        <div class="hidden md:flex rounded-md border border-primary-400 bg-white overflow-hidden">
-                            <input type="search" name="search" id="search" class="border-0 bg-none" placeholder="Search">
-                            <button class="px-2 border-l bg-primary-50 hover:bg-primary-500 hover:text-white text-primary-500 transition">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                        </div>
                         <p class="rounded-full p-2 bg-primary-50 border border-primary-400 w-10 h-10 flex place-items-center justify-center text-primary-500 ">
                             <i class="fa-solid fa-user"></i>
                         </p>
@@ -57,16 +51,20 @@
 </template>
 <script>
 import { Link } from '@inertiajs/vue3'
+import axios from 'axios';
+import { ref } from 'vue';
 export default {
     components: { Link },
-    setup() {
-        const sideToggle = () => {
-            const aside = document.querySelector('aside');
-            aside.classList.toggle('-translate-x-full');
+    props: {
+        uri: {
+            type: String
         }
-        return {
-            sideToggle
-        }
+    },
+    setup(props) {
+        const url = props.uri.split('/')[1];
+        const searchInput = ref(null);
+
+        return {search, searchInput}
     }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
 <Head title="Dashboard" />
-<div>dashboard</div>
+<div>dashboard // workin on it</div>
 </template>
 
 <script>

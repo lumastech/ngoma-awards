@@ -137,4 +137,32 @@ class UserController extends Controller
         // return inertia view
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
+
+    // search users
+    public function search(Request $request)
+    {
+        // validate request
+        $request->validate([
+            'search' => 'nullable|string',
+        ]);
+
+        // search is empty then return user with pagination 20
+        if($request->search == ''){
+            $users = User::paginate(15);
+        }
+
+        // filter users
+        $users = User::where('name', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('email', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('role', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('phone', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('address', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('status', 'LIKE', '%' . $request->search . '%')
+            ->paginate(15);
+
+        // return users
+        return \response()->json($users);
+
+
+    }
 }

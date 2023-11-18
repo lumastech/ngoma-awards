@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\AwardController;
@@ -48,6 +49,12 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    // search
+    Route::get('dashboard/search', [DashboardController::class, 'search']);
+    Route::get('users/search', [UserController::class, 'search']);
+    Route::get('artists/search', [ArtistController::class, 'search']);
+    Route::get('awards/search', [AwardController::class, 'search']);
+    Route::get('categories/search', [AwardsCategoryController::class, 'search']);
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
@@ -56,4 +63,5 @@ Route::middleware([
     Route::resource('artists', ArtistController::class);
     Route::resource('awards', AwardController::class);
     Route::resource('categories', AwardsCategoryController::class);
+
 });

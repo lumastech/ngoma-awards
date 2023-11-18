@@ -106,4 +106,23 @@ class ArtistController extends Controller
         // delete artist
         $artist->delete();
     }
+
+
+    // search for artist
+    public function search(Request $request)
+    {
+        // get search term
+        $searchTerm = $request->input('search');
+
+        if($searchTerm == ''){
+             $artists = Artist::with('awardsCategory')->withCount('votes')->orderBy('votes_count', 'desc')->paginate(20);
+             // return json
+            return response()->json($artists);
+        }
+        // search the artist
+        $artists = Artist::where('name', 'LIKE', '%' . $searchTerm . '%')->with('awardsCategory')->withCount('votes')->orderBy('votes_count', 'desc')->paginate(20);
+
+        // return json
+        return response()->json($artists);
+    }
 }
