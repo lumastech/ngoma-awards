@@ -145,6 +145,10 @@ export default {
         }
 
         const submit = () => {
+            if (editting.value) {
+                updateArtist();
+                return;
+            }
             artist.post(route('artists.store'), {
                 onSuccess: () => {
                     artist.reset();

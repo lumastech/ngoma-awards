@@ -53,7 +53,7 @@ Route::middleware([
     Route::get('dashboard/search', [DashboardController::class, 'search']);
     Route::get('users/search', [UserController::class, 'search']);
     Route::get('artists/search', [ArtistController::class, 'search']);
-    Route::get('awards/search', [AwardController::class, 'search']);
+    // Route::get('awards/search', [AwardController::class, 'search']);
     Route::get('categories/search', [AwardsCategoryController::class, 'search']);
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');

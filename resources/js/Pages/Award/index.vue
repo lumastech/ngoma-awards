@@ -46,7 +46,7 @@
             <form @submit.prevent="submit" action="#" method="post" class="grid md:grid-cols-2 gap-4 bg-white rounded-md p-4">
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" v-model="award.name" class="block border border-primary-400 rounded placeholder-gray-400 w-full" placeholder="James Phiri">
+                    <input type="text" v-model="award.name" class="block border border-primary-400 rounded placeholder-gray-400 w-full" placeholder="Award name">
                     <span v-if="errors.name" class="text-red-500">{{ errors.name }}</span>
                 </div>
             </form>
@@ -122,6 +122,10 @@ export default {
         }
 
         const submit = () => {
+            if (editting.value) {
+                updateAward();
+                return;
+            }
             award.post(route('awards.store'), {
                 onSuccess: () => {
                     award.reset();
