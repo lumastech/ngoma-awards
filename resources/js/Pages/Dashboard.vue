@@ -45,6 +45,12 @@
     </div>
 
     <div class="shadow rounded bg-white p-2 max-w-7xl mx-auto my-12 overflow-x-auto p-2">
+        <div class="flex gap-2 place-items-center">
+            <div class="flex-auto">
+                <h2 class="text-2xl text-primary-500 font-bold mb-4">Recent Users</h2>
+            </div>
+            <Link href="/users" class="bg-primary-500 text-white px-2 py-1 text-sm hover:bg-primary-700 transition" >MANAGE USERS</Link>
+        </div>
         <table class="w-full">
             <thead>
                 <tr>
@@ -84,6 +90,12 @@
 
     <div class="grid md:grid-cols-2 gap-4 max-w-7xl mx-auto mt-7 mb-4 p-2">
         <div class="shadow rounded bg-white p-2 overflow-x-auto">
+            <div class="flex gap-2 place-items-center">
+                <div class="flex-auto">
+                    <h2 class="text-2xl text-primary-500 font-bold mb-4">Recent Artists</h2>
+                </div>
+                <Link href="/artists" class="bg-primary-500 text-white px-2 py-1 text-sm hover:bg-primary-700 transition" >MANAGE ARTISTS</Link>
+            </div>
             <table class="w-full">
                 <thead>
                     <tr>
@@ -116,6 +128,12 @@
         </div>
 
         <div class="shadow rounded bg-white p-2 overflow-x-auto">
+            <div class="flex gap-2 place-items-center">
+                <div class="flex-auto">
+                    <h2 class="text-2xl text-primary-500 font-bold mb-4">Recent Awards</h2>
+                </div>
+                <Link href="/awards" class="bg-primary-500 text-white px-2 py-1 text-sm hover:bg-primary-700 transition" >MANAGE AWRADS</Link>
+            </div>
             <table class="w-full">
                 <thead>
                     <tr>
@@ -146,6 +164,8 @@
 </template>
 
 <script>
+import NavLink from '@/Components/NavLink.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Layout from '@/Layouts/DashboardLayout.vue';
 import { Link, Head } from '@inertiajs/vue3';
 export default {
@@ -160,7 +180,7 @@ export default {
         awards: { Object },
 
     },
-    components: { Link, Head },
+    components: { Link, Head, PrimaryButton, NavLink },
     setup() {
 
     }

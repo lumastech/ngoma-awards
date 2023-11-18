@@ -27,11 +27,11 @@
             </aside>
             <main class="flex-auto h-full text-gray-500">
                 <div class="flex justify-between p-4 mb-4 place-items-center border-b">
-                    <h2 class="text-gray-500">DASHBOARD</h2>
+                    <Link href="/dashboard" class="text-gray-500">DASHBOARD</Link>
                     <div class="flex space-x-4">
-                        <p class="rounded-full p-2 bg-primary-50 border border-primary-400 w-10 h-10 flex place-items-center justify-center text-primary-500 ">
+                        <Link href="/" class="rounded-full p-2 bg-primary-50 border border-primary-400 w-10 h-10 flex place-items-center justify-center text-primary-500 ">
                             <i class="fa-solid fa-user"></i>
-                        </p>
+                        </Link>
                         <Link href="/logout" as="button" type="button" method="post" class="rounded-md p-2 bg-primary-50 border border-primary-400  h-10 flex gap-2 place-items-center justify-center text-primary-500 hover:bg-primary-500 hover:text-white transition ">
                             <i class="fa-solid fa-sign-out"></i>
                             <span class="hidden md:inline">Logout</span>
