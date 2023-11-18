@@ -42,7 +42,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="pt-10 h-full w-full overflow-auto md:pb-32">
+                <div class="pt-10 h-full w-full overflow-auto pb-32 md:pb-32">
                     <slot></slot>
                 </div>
             </main>
@@ -51,20 +51,16 @@
 </template>
 <script>
 import { Link } from '@inertiajs/vue3'
-import axios from 'axios';
-import { ref } from 'vue';
 export default {
     components: { Link },
-    props: {
-        uri: {
-            type: String
+    setup() {
+        const sideToggle = () => {
+            const aside = document.querySelector('aside');
+            aside.classList.toggle('-translate-x-full');
         }
-    },
-    setup(props) {
-        const url = props.uri.split('/')[1];
-        const searchInput = ref(null);
-
-        return {search, searchInput}
+        return {
+            sideToggle
+        }
     }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded-md border border-primary-400 bg-white overflow-hidden">
+    <div class="flex rounded-md border border-primary-400 bg-white overflow-hidden">
         <input type="search" @keyup="search" v-model="searchInput" class="border-0 bg-none flex-auto" :placeholder="`Seach ${uri.split('/')[0]}`">
         <button @click="search" class="px-2 border-l bg-primary-50 hover:bg-primary-500 hover:text-white text-primary-500 transition">
             <i class="fa-solid fa-magnifying-glass"></i>

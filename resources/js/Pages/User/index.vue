@@ -1,7 +1,7 @@
 <template>
     <Head title="Users" />
     <div class="max-w-7xl mx-auto px-2">
-        <div class="flex justify-between gap-4 mb-4 place-items-center">
+        <div class="md:flex justify-between gap-4 mb-4 place-items-center">
             <h2>STAFFS</h2>
             <div class="flex gap-2">
                 <Search uri="users/search" @res="(res) =>searchResponse(res)" />
