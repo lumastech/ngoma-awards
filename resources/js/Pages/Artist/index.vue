@@ -15,6 +15,7 @@
                         <th class="border-b border-gray-200 px-2 py-1"></th>
                         <th class="border-b border-gray-200 px-2 py-1 text-left">Name</th>
                         <th class="border-b border-gray-200 px-2 py-1 text-left">Award Category</th>
+                        <th class="border-b border-gray-200 px-2 py-1 text-left">Votes</th>
                         <th class="border-b border-gray-200 px-2 py-1 text-right">Action</th>
                     </tr>
                 </thead>
@@ -24,9 +25,8 @@
                             <i class="fa-solid fa-user"></i>
                         </td>
                         <td class="border-b border-gray-200 px-2 py-1 text-left">{{ artist.name }}</td>
-                        <td class="border-b border-gray-200 px-2 py-1 text-left">
-                            <a href="mailto:m@d.c">{{ artist.awards_category.name }}</a>
-                        </td>
+                        <td class="border-b border-gray-200 px-2 py-1 text-left">{{ artist.awards_category.name }}</td>
+                        <td class="border-b border-gray-200 px-2 py-1 text-left">{{ artist.votes_count }}</td>
                         <td class="border-b border-gray-200 px-2 py-1 text-right">
                             <button @click="editArtist(artist.name, artist.awards_category.id, artist.id)" class="p-2 text-sky-500">
                                 <i class="fa-solid fa-edit"></i>
