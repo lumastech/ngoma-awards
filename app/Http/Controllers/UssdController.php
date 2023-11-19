@@ -31,19 +31,26 @@ class UssdController extends Controller
             $awards = Award::all();
 
             $menu_options = [
-                '1' => 'Enter 1 to play Zipezemo Game show. \n',
+                '1' => '\n' . ' ' . 'Enter 1 to play Zipezemo Game show.',
             ];
 
             foreach ($awards as $award) {
                 $menu_options[] = $award->id . '.' . ' ' . $award->name . ' ' . "\n";
             }
 
-            $response_msg = 'Welcome to millennium TV to participate on the following programs: \n';
+            $response_msg = 'Welcome to millennium TV to participate on the following programs: ';
                 foreach ($menu_options as $key => $value) {
-                    $response_msg .= "{$key}. {$value}\n";
+                    $response_msg .= "{$value}\n";
                 }
 
-            dd($response_msg);
+            //dd($response_msg);
+
+            if(true){
+                return response($response_msg, 200)
+                    ->header('Freeflow', 'FB')
+                    ->header('charge', 'N')
+                    ->header('cpRefId', $this->generateUniqueString());
+            }
 
             if ($request->query('RequestType') === "2") {
 
