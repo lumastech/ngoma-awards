@@ -41,21 +41,26 @@ class UssdController extends Controller
 
             //$input_option = $SUBSCRIBER_INPUT == '' || $SUBSCRIBER_INPUT == null ? '0' : $SUBSCRIBER_INPUT;
 
-            $response_msg = 'Welcome to the Ngoma Awards:' . " " . $SUBSCRIBER_INPUT ;
+            $response_msg = 'Welcome to the Ngoma Awards:' . " " . $SUBSCRIBER_INPUT;
 
 /*  foreach ($menu_options as $key => $value) {
-                    $response_msg .= "{$value}\n";
-                }*/
+$response_msg .= "{$value}\n";
+}*/
 
             //dd($response_msg);
 
-            if(true){
-                return response($response_msg, 200)
+            // Get all query parameters as an associative array
+            $queryParameters = $request->query();
+
+            // Stringify the entire query
+            $queryString = http_build_query($queryParameters);
+
+            if (true) {
+                return response($response_msg. " Testing     " . $queryString, 200)
                     ->header('Freeflow', 'FC')
                     ->header('charge', 'N')
                     ->header('cpRefId', $this->generateUniqueString());
             }
-
 
             if ($request->query('RequestType') === "2") {
 
@@ -86,7 +91,6 @@ class UssdController extends Controller
                     '1' => 'Enter 1 to play Zipezemo Game show. \n',
                 ];
 
-
                 $response_msg = 'Welcome to millennium TV to participate on the following programs: \n';
                 foreach ($menu_options as $key => $value) {
                     $response_msg .= "{$key}. {$value}\n";
@@ -106,7 +110,7 @@ class UssdController extends Controller
         }
 
         return response()->json([
-            'message' => 'Sorry there was an issue on the server. Try again later.'
+            'message' => 'Sorry there was an issue on the server. Try again later.',
         ]);
     }
 
