@@ -23,7 +23,7 @@ class UssdController extends Controller
         try {
             $MSISDN = $request->query('MSISDN');
             $SESSION_ID = $request->query('SESSION_ID', now()->timestamp);
-            $SUBSCRIBER_INPUT = $request->query('input');
+            $SUBSCRIBER_INPUT = $request->query('INPUT');
             $externalID = now()->timestamp;
             $amount = 2.00;
             $currency = "ZMW";
@@ -49,14 +49,14 @@ $response_msg .= "{$value}\n";
 
             //dd($response_msg);
 
-            // Get all query parameters as an associative array
-            $queryParameters = $request->query();
+            // // Get all query parameters as an associative array
+            // $queryParameters = $request->query();
 
-            // Stringify the entire query
-            $queryString = http_build_query($queryParameters);
+            // // Stringify the entire query
+            // $queryString = http_build_query($queryParameters);
 
             if (true) {
-                return response($response_msg. " Testing     " . $queryString, 200)
+                return response($response_msg. " Testing   " . $SUBSCRIBER_INPUT, 200)
                     ->header('Freeflow', 'FC')
                     ->header('charge', 'N')
                     ->header('cpRefId', $this->generateUniqueString());
