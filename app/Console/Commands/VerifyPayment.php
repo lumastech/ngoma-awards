@@ -30,12 +30,12 @@ class VerifyPayment extends Command
 
         $payments = \App\Models\VoterPayment::where('is_verified', false)->get();
 
-            $MSISDN = '';
-            $SESSION_ID = now()->timestamp;
-            $externalID = now()->timestamp;
-            $amount = 2.00;
-            $currency = "ZMW";
-            $token = env('MOMO_TOKEN');
+        $MSISDN = '';
+        $SESSION_ID = now()->timestamp;
+        $externalID = now()->timestamp;
+        $amount = 2.00;
+        $currency = "ZMW";
+        $token = env('MOMO_TOKEN');
 
         foreach ($payments as $payment) {
             // Perform actions for users with balances less than 50
@@ -44,16 +44,12 @@ class VerifyPayment extends Command
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $token,
                 'Content-Type' => 'application/json',
-            ])->post('https://lipila-prod.hobbiton.app/transactions/status?transactionId=' . $payment->tnx_id, [
-                'currency' => $currency,
-                'amount' => $amount,
-                'accountNumber' => $MSISDN,
-                'fullName' => "Zipezemo Participant-{$MSISDN}",
-                'phoneNumber' => $MSISDN,
-                'email' => 'user@gmail.com',
-                'externalId' => now()->timestamp,
-                'narration' => 'Ngoma Awards Voting',
-            ]);
+            ])->get('https://lipila-prod.hobbiton.app/transactions/status?transactionId=' . $payment->tnx_id);
+
+            // Accessing the response body as an array
+            $responseBody = $response->json();
+
+            $status = $responseBody['status'];
         }
 
         $this->info('Payment verification completed.');
