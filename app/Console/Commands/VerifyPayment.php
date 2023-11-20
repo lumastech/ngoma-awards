@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Vote;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
@@ -30,11 +31,6 @@ class VerifyPayment extends Command
 
         $payments = \App\Models\VoterPayment::where('is_verified', false)->get();
 
-        $MSISDN = '';
-        $SESSION_ID = now()->timestamp;
-        $externalID = now()->timestamp;
-        $amount = 2.00;
-        $currency = "ZMW";
         $token = env('MOMO_TOKEN');
 
         foreach ($payments as $payment) {
@@ -50,6 +46,28 @@ class VerifyPayment extends Command
             $responseBody = $response->json();
 
             $status = $responseBody['status'];
+
+            if ($status == 'Pending') {
+                break;
+            }
+
+            if ($status == 'Failed' || $status == 'Cancelled' ) {
+                $payment->is_verified = true;
+                $payment->save();
+            }
+
+            if ($status == 'Successful') {
+
+                $vote = Vote::create([
+                    'name' => 'Voter',
+                    'artists_id' => $payment->artist_id,
+                ]);
+
+                $payment->is_verified = true;
+                $payment->save();
+
+            }
+
         }
 
         $this->info('Payment verification completed.');
