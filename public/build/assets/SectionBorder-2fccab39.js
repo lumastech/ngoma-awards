@@ -1,1 +1,0 @@
-import{_ as s,o,d as c,a as e}from"./app-f44106c5.js";const r={},t={class:"hidden sm:block"},a=e("div",{class:"py-8"},[e("div",{class:"border-t border-gray-200"})],-1),d=[a];function n(_,i){return o(),c("div",t,d)}const f=s(r,[["render",n]]);export{f as S};
