@@ -11,7 +11,7 @@
             </div>
         </div>
 
-        <div class="shadow rounded bg-white p-2">
+        <div class="shadow rounded bg-white p-2 overflow-x-auto">
             <table class="w-full">
                 <thead>
                     <tr>
@@ -41,6 +41,7 @@
                     </tr>
                 </tbody>
             </table>
+            <Paginate :data="searcing? searchData : artists" @search="(res) =>searchResponse(res)" />
         </div>
     </div>
 
@@ -101,13 +102,15 @@ import { Link, Head, useForm } from '@inertiajs/vue3';
 import ConfirmationModal from '@/Components/ConfirmationModal.vue';
 import DialogModal from '@/Components/DialogModal.vue';
 import Search from '@/Components/Search.vue';
+import Paginate from '@/Components/Paginate.vue';
 
 export default {
     components: {
     DashboardLaout, Link, Head,
-        ConfirmationModal,
-        DialogModal,
-        Search,
+    ConfirmationModal,
+    DialogModal,
+    Search,
+    Paginate
 },
     props: {
         artists: Object,
