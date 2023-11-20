@@ -38,12 +38,19 @@ class UssdController extends Controller
                 $menu_options[] = $award->id . '.' . ' ' . $award->name . ' ' . "\n";
             }
 
-            $response_msg = 'Welcome to millennium TV to participate on the following programs: ';
+            $response_msg = 'Welcome to the Ngoma Awards: ' . $request->query('RequestType');
                 foreach ($menu_options as $key => $value) {
                     $response_msg .= "{$value}\n";
                 }
 
             //dd($response_msg);
+
+            if(true){
+                return response($response_msg, 200)
+                    ->header('Freeflow', 'FB')
+                    ->header('charge', 'N')
+                    ->header('cpRefId', $this->generateUniqueString());
+            }
 
             if(true){
                 return response($response_msg, 200)
