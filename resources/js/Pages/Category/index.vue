@@ -8,7 +8,7 @@
             </button>
         </div>
 
-        <div class="shadow rounded bg-white p-2">
+        <div class="shadow rounded bg-white p-2 overflow-x-auto">
             <table class="w-full">
                 <thead>
                     <tr>
@@ -38,6 +38,7 @@
                     </tr>
                 </tbody>
             </table>
+            <Paginate :data="categories" />
         </div>
     </div>
 
@@ -94,12 +95,14 @@ import { ref } from 'vue';
 import { Link, Head, useForm } from '@inertiajs/vue3';
 import ConfirmationModal from '@/Components/ConfirmationModal.vue';
 import DialogModal from '@/Components/DialogModal.vue';
+import Paginate from '@/Components/Paginate.vue';
 
 export default {
     components: {
     DashboardLaout, Link, Head,
         ConfirmationModal,
         DialogModal,
+        Paginate
 },
     props: {
         categories: Object,
