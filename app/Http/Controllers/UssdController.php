@@ -47,17 +47,11 @@ class UssdController extends Controller
 
             if(true){
                 return response($response_msg, 200)
-                    ->header('Freeflow', 'FB')
+                    ->header('Freeflow', 'FC')
                     ->header('charge', 'N')
                     ->header('cpRefId', $this->generateUniqueString());
             }
 
-            if(true){
-                return response($response_msg, 200)
-                    ->header('Freeflow', 'FB')
-                    ->header('charge', 'N')
-                    ->header('cpRefId', $this->generateUniqueString());
-            }
 
             if ($request->query('RequestType') === "2") {
 
