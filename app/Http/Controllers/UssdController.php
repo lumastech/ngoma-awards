@@ -38,10 +38,11 @@ class UssdController extends Controller
                 $menu_options[] = $award->id . '.' . ' ' . $award->name . ' ' . "\n";
             }
 
-            $response_msg = 'Welcome to the Ngoma Awards: ' . $request->query('RequestType');
-                foreach ($menu_options as $key => $value) {
+            $response_msg = 'Welcome to the Ngoma Awards' ;
+              
+/*  foreach ($menu_options as $key => $value) {
                     $response_msg .= "{$value}\n";
-                }
+                }*/
 
             //dd($response_msg);
 
