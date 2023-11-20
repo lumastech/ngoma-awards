@@ -39,9 +39,9 @@ class UssdController extends Controller
                 $menu_options[] = $award->id . '.' . ' ' . $award->name . ' ' . "\n";
             }
 
-            $input_option = $SUBSCRIBER_INPUT == '' || $SUBSCRIBER_INPUT == null ? '0' : $SUBSCRIBER_INPUT;
+            //$input_option = $SUBSCRIBER_INPUT == '' || $SUBSCRIBER_INPUT == null ? '0' : $SUBSCRIBER_INPUT;
 
-            $response_msg = 'Welcome to the Ngoma Awards' . $input_option ;
+            $response_msg = 'Welcome to the Ngoma Awards:' . $SUBSCRIBER_INPUT ;
 
 /*  foreach ($menu_options as $key => $value) {
                     $response_msg .= "{$value}\n";
