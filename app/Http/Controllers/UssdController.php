@@ -23,6 +23,7 @@ class UssdController extends Controller
         try {
             $MSISDN = $request->query('MSISDN');
             $SESSION_ID = $request->query('SESSION_ID', now()->timestamp);
+            $SUBSCRIBER_INPUT = $request->query('SUBSCRIBER_INPUT');
             $externalID = now()->timestamp;
             $amount = 2.00;
             $currency = "ZMW";
@@ -38,8 +39,10 @@ class UssdController extends Controller
                 $menu_options[] = $award->id . '.' . ' ' . $award->name . ' ' . "\n";
             }
 
-            $response_msg = 'Welcome to the Ngoma Awards' ;
-              
+            $input_option = $SUBSCRIBER_INPUT == '' || $SUBSCRIBER_INPUT == null ? '0' : $SUBSCRIBER_INPUT;
+
+            $response_msg = 'Welcome to the Ngoma Awards' . $input_option ;
+
 /*  foreach ($menu_options as $key => $value) {
                     $response_msg .= "{$value}\n";
                 }*/
