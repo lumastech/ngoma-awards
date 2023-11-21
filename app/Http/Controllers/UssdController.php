@@ -40,6 +40,8 @@ class UssdController extends Controller
                 ]);
             }
 
+            $userJourney = UserJourney::find($userJourney->id);
+
             //dd($userJourney);
 
             if ($SUBSCRIBER_INPUT == '0') {
@@ -128,7 +130,7 @@ class UssdController extends Controller
                 $response_msg = 'Please select the category you want to vote for: ' . "\n";
 
                 foreach ($menu_options as $key => $value) {
-                    $response_msg .= "{$value} \n";
+                    $response_msg .= "{$value}";
                 }
 
                 UserJourney::where('phone_number', '=', $MSISDN)->update([
