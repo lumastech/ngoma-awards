@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('selected_award')->nullable();
             $table->string('selected_award_category')->nullable();
             $table->string('selected_artist')->nullable();
+            $table->integer('step')->default(1);
             $table->timestamps();
         });
     }
