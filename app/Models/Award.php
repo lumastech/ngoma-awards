@@ -15,6 +15,6 @@ class Award extends Model
 
     public function categories()
     {
-        return $this->hasMany(AwardsCategory::class, 'award_id');
+        return $this->hasMany(AwardsCategory::class, 'award_id')->orderBy('id', 'asc');
     }
 }

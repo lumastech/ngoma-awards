@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Artist;
 use App\Models\Award;
+use App\Models\AwardsCategory;
 use App\Models\UserJourney;
 use App\Models\VoterPayment;
 use Illuminate\Http\Request;
@@ -69,7 +70,7 @@ class UssdController extends Controller
                 $menu_options = [];
 
                 foreach ($awards as $award) {
-                    $menu_options[] = $award->id . '.' . ' ' . $award->name . ' ' . "\n";
+                    $menu_options[] = $award->id . '.' . ' ' . $award->name;
                 }
 
                 $response_msg = 'Welcome to the Ngoma Awards. To participate in the awards, please select the award you want to vote for: ' . "\n";
@@ -115,8 +116,11 @@ class UssdController extends Controller
 
                 $menu_options = [];
 
+                $currentIndex = 1;
                 foreach ($award->categories as $category) {
-                    $menu_options[] = $category->id . '.' . ' ' . $category->name . ' ' . "\n";
+                    $menu_options[] = $currentIndex . '.' . ' ' . $category->name . ' ' . "\n";
+
+                    $currentIndex++;
                 }
 
                 $menu_options[] = '0. Cancel your progress';
@@ -141,7 +145,7 @@ class UssdController extends Controller
             if ($userJourney->step == 3) {
 
                 $award = Award::find($userJourney->selected_award);
-                $category = $award->categories()->where('id', $SUBSCRIBER_INPUT)->first();
+                $category = $award->categories[$SUBSCRIBER_INPUT - 1];
 
                 if($category == null){
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
@@ -161,8 +165,11 @@ class UssdController extends Controller
 
                 $menu_options = [];
 
+                $currentIndex = 1;
                 foreach ($category->artists as $artist) {
-                    $menu_options[] = $artist->id . '.' . ' ' . $artist->name . ' ' . "\n";
+                    $menu_options[] = $currentIndex . '.' . ' ' . $artist->name . ' ' . "\n";
+
+                    $currentIndex++;
                 }
 
                 $menu_options[] = '0. Cancel your progress';
@@ -187,7 +194,8 @@ class UssdController extends Controller
 
             if ($userJourney->step == 4) {
 
-                $artist = Artist::find($SUBSCRIBER_INPUT);
+                //$artist = Artist::find($SUBSCRIBER_INPUT);
+                $artist = AwardsCategory::find($userJourney->selected_award_category)->artists[$SUBSCRIBER_INPUT - 1];
 
                 if($artist == null){
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
