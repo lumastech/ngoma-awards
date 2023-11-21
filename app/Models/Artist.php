@@ -22,6 +22,6 @@ class Artist extends Model
 
     public function votes()
     {
-        return $this->hasMany(Vote::class, 'artists_id');
+        return $this->hasMany(Vote::class, 'artists_id')->orderBy('id', 'asc');
     }
 }
