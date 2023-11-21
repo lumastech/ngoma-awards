@@ -188,7 +188,7 @@ class UssdController extends Controller
                 ]);
 
                 return response($response_msg, 200)
-                    ->header('Freeflow', 'FB')
+                    ->header('Freeflow', 'FC')
                     ->header('charge', 'N')
                     ->header('cpRefId', $this->generateUniqueString());
 
