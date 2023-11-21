@@ -228,12 +228,20 @@ class UssdController extends Controller
 
                 //$responseBody['transactionId']
 
+                if ($responseBody['status'] == 'Failed') {
+                    $response_msg = 'Sorry there was an issue processing your payment. Try again later.';
+                    return response($response_msg, 200)
+                        ->header('Freeflow', 'FB')
+                        ->header('charge', 'N')
+                        ->header('cpRefId', $this->generateUniqueString());
+                }
+
                 VoterPayment::create([
                     'tnx_id' => $responseBody['transactionId'],
                     'artist_id' => $SUBSCRIBER_INPUT,
                 ]);
 
-                $response_msg = 'Thank you for your vote, you will soon receive a pin prompt shortly.';
+                $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
 
                 UserJourney::where('phone_number', '=', $MSISDN)->delete();
 
