@@ -110,7 +110,7 @@ class UssdController extends Controller
 
                 if(($award->categories)->isEmpty()){
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
-                    return response('There are currently no categories in this award', 200)
+                    return response('There are currently no categories in for this award', 200)
                     ->header('Freeflow', 'FB')
                     ->header('charge', 'N')
                     ->header('cpRefId', $this->generateUniqueString());
@@ -159,7 +159,7 @@ class UssdController extends Controller
 
                 if(($category->artists)->isEmpty()){
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
-                    return response('There are currently no artists in this category', 200)
+                    return response('There are currently no artists in for this category', 200)
                     ->header('Freeflow', 'FB')
                     ->header('charge', 'N')
                     ->header('cpRefId', $this->generateUniqueString());
