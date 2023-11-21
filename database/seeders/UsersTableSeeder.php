@@ -17,13 +17,13 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'System Admin',
-                'email' => 'admin@ngoma.com',
+                'email' => 'ussdngoma@gmail.com',
                 'role' => 'admin',
                 'phone' => '1234567890',
                 'address' => '123 Main St',
                 'status' => 'active',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => Hash::make('UIvyc0qU'),
             ],
             // You can add more users here
         ]);
