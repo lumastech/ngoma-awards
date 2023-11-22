@@ -182,7 +182,7 @@ class UssdController extends Controller
                     $response_msg .= "{$value}";
                 }
 
-                $userJourney->update([
+                UserJourney::where('phone_number', '=', $MSISDN)->update([
                     'step' => 4,
                     'selected_award_category' => $SUBSCRIBER_INPUT,
                 ]);
@@ -197,6 +197,7 @@ class UssdController extends Controller
             if ($userJourney->step == 4) {
 
                 //$artist = Artist::find($SUBSCRIBER_INPUT);
+                //dd($userJourney);
                 $artist = AwardsCategory::find($userJourney->selected_award_category)->artists[$SUBSCRIBER_INPUT - 1];
 
                 if($artist == null){
@@ -206,6 +207,8 @@ class UssdController extends Controller
                     ->header('charge', 'N')
                     ->header('cpRefId', $this->generateUniqueString());
                 }
+
+                //dd($artist);
 
                 $response = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $token,
@@ -224,9 +227,11 @@ class UssdController extends Controller
                 // Accessing the response body as an array
                 $responseBody = $response->json();
 
+                //dd($responseBody);
+
                 //$responseBody['transactionId']
 
-                if ($responseBody['status'] == 'Failed') {
+                if ($responseBody['status'] != 'Pending') {
                     $response_msg = 'Sorry there was an issue processing your payment. Try again later.';
                     return response($response_msg, 200)
                         ->header('Freeflow', 'FB')
@@ -234,10 +239,16 @@ class UssdController extends Controller
                         ->header('cpRefId', $this->generateUniqueString());
                 }
 
-                VoterPayment::create([
-                    'tnx_id' => $responseBody['transactionId'],
+                $txn = $responseBody['transactionId'];
+
+                //dd($txn);
+
+                $vote = VoterPayment::create([
+                    'txn_id' => $txn,
                     'artist_id' => $SUBSCRIBER_INPUT,
                 ]);
+
+                //dd($vote);
 
                 $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
 
@@ -251,6 +262,7 @@ class UssdController extends Controller
             }
 
         } catch (\Exception $e) {
+            //dd($e);
             $response_msg = 'Sorry there was an issue. Try again later.';
             return response($response_msg, 200)
                 ->header('Freeflow', 'FB')
