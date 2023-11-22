@@ -179,7 +179,7 @@ class UssdController extends Controller
                 $response_msg = 'Please select the artist you want to vote for: ' . "\n";
 
                 foreach ($menu_options as $key => $value) {
-                    $response_msg .= "{$value} \n";
+                    $response_msg .= "{$value}";
                 }
 
                 $userJourney->update([
@@ -206,8 +206,6 @@ class UssdController extends Controller
                     ->header('charge', 'N')
                     ->header('cpRefId', $this->generateUniqueString());
                 }
-
-                sleep(1.5); // Delay for 1.5 seconds
 
                 $response = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $token,
