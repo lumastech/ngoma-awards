@@ -1,14 +1,14 @@
 <template>
     <div class="fixed w-full h-full">
         <div class="md:flex h-full bg-sky-50">
-            <aside @click="sideToggle" class="z-50 md:w-[60px] xl:w-[300px] shrink-0 bg-primary-50 py-7 h-full md:m-2 rounded-md overflow-x-hidden overflow-y-auto absolute md:static md:translate-x-0 -translate-x-full transition">
+            <aside @click="sideToggle" class="z-50 md:w-[60px] xl:w-[300px] hover:w-[300px] shrink-0 bg-primary-50 py-7 h-full md:m-2 rounded-md overflow-x-hidden overflow-y-auto absolute md:static md:translate-x-0 -translate-x-full transition">
                 <nav class="flex flex-col px-2 md:px-2">
                     <Link href="/dashboard" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-md my-1 hover:bg-primary-500 hover:text-white transition">
                         <i class="fa-solid fa-home w-7 mr-3"></i>
                         Dashboard
                     </Link>
                     <Link href="/users" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
-                        <i class="fa-solid fa-user w-7 mr-3"></i>
+                        <i class="fa-solid fa-user w-7 mr-3 text-xl"></i>
                         Users
                     </Link>
                     <Link href="/artists" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
@@ -20,7 +20,7 @@
                         Awards
                     </Link>
                     <Link href="/categories" class="flex flex-nowrap place-items-center overflow-hidden text-primary-500 px-4 py-2 rounded md:rounded-lg bg-white shadow-sm my-1 hover:bg-primary-500 hover:text-white transition">
-                        <i class="fa-solid fa-file-invoice-dollar w-7 mr-3"></i>
+                        <i class="fa-solid fa-file-invoice-dollar w-7 mr-3 text-xl"></i>
                         Award Categories
                     </Link>
                 </nav>
