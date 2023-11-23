@@ -204,7 +204,7 @@ class UssdController extends Controller
 
                 $artist = AwardsCategory::find($category->id)->artists[$artistIndex];
 
-                dd($artist);
+                //dd($artist);
 
                 if($artist == null){
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
