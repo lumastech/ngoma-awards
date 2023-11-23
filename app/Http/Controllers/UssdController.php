@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SendPinPromptEvent;
 use App\Models\Artist;
 use App\Models\Award;
 use App\Models\AwardsCategory;
@@ -197,12 +198,16 @@ class UssdController extends Controller
             if ($userJourney->step == 4) {
 
                 $award = Award::find($userJourney->selected_award);
-                $category = $award->categories[(int)$SUBSCRIBER_INPUT - 1];
+
+                //$category = $award->categories[(int)$SUBSCRIBER_INPUT - 1];
+
+                $category = AwardsCategory::where('award_id', '=', $award->id)->first();
 
                 // $cate = (int)$userJourney->selected_award_category;
                 $artistIndex = (int)$SUBSCRIBER_INPUT - 1;
 
-                $artist = AwardsCategory::find($category->id)->artists[$artistIndex];
+                //$artist = AwardsCategory::find($category->id)->artists[$artistIndex];
+                $artist = $category->artists[$artistIndex];
 
                 //dd($artist);
 
@@ -215,45 +220,55 @@ class UssdController extends Controller
                 }
 
                 //dd($artist);
-                sleep(2);
 
-                $response = Http::withHeaders([
-                    'Authorization' => 'Bearer ' . $token,
-                    'Content-Type' => 'application/json',
-                ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
-                    'currency' => $currency,
-                    'amount' => $amount,
-                    'accountNumber' => $MSISDN,
-                    'fullName' => "Ngoma Awards-{$MSISDN}",
-                    'phoneNumber' => $MSISDN,
-                    'email' => 'user@gmail.com',
-                    'externalId' => now()->timestamp,
-                    'narration' => 'Ngoma Awards',
-                ]);
+                $data = [
+                    'MSISDN' => $MSISDN,
+                    'artist_id' => $artist->id
+                ];
 
-                // Accessing the response body as an array
-                $responseBody = $response->json();
+                //SendPinPromptEvent::dispatch($data);
 
-                //dd($responseBody);
+                event(new \App\Events\SendPinPromptEvent($data));
 
-                //$responseBody['transactionId']
+                //dd($data);
 
-                if ($responseBody['status'] != 'Pending') {
-                    $response_msg = 'Sorry there was an issue processing your payment. Try again later.';
-                    return response($response_msg, 200)
-                        ->header('Freeflow', 'FB')
-                        ->header('charge', 'N')
-                        ->header('cpRefId', $this->generateUniqueString());
-                }
+                // $response = Http::withHeaders([
+                //     'Authorization' => 'Bearer ' . $token,
+                //     'Content-Type' => 'application/json',
+                // ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
+                //     'currency' => $currency,
+                //     'amount' => $amount,
+                //     'accountNumber' => $MSISDN,
+                //     'fullName' => "Ngoma Awards-{$MSISDN}",
+                //     'phoneNumber' => $MSISDN,
+                //     'email' => 'user@gmail.com',
+                //     'externalId' => now()->timestamp,
+                //     'narration' => 'Ngoma Awards',
+                // ]);
 
-                $txn = $responseBody['transactionId'];
+                // // Accessing the response body as an array
+                // $responseBody = $response->json();
 
-                //dd($txn);
+                // //dd($responseBody);
 
-                $vote = VoterPayment::create([
-                    'txn_id' => $txn,
-                    'artist_id' => $SUBSCRIBER_INPUT,
-                ]);
+                // //$responseBody['transactionId']
+
+                // if ($responseBody['status'] != 'Pending') {
+                //     $response_msg = 'Sorry there was an issue processing your payment. Try again later.';
+                //     return response($response_msg, 200)
+                //         ->header('Freeflow', 'FB')
+                //         ->header('charge', 'N')
+                //         ->header('cpRefId', $this->generateUniqueString());
+                // }
+
+                // $txn = $responseBody['transactionId'];
+
+                // //dd($txn);
+
+                // $vote = VoterPayment::create([
+                //     'txn_id' => $txn,
+                //     'artist_id' => $SUBSCRIBER_INPUT,
+                // ]);
 
                 //dd($vote);
 
@@ -269,7 +284,8 @@ class UssdController extends Controller
             }
 
         } catch (\Exception $e) {
-            //dd($e);
+            dd($e);
+            dd('Reached here');
             $response_msg = 'Sorry there was an issue. Try again later.';
             return response($response_msg, 200)
                 ->header('Freeflow', 'FB')
