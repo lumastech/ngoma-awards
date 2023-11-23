@@ -226,9 +226,9 @@ class UssdController extends Controller
                     'artist_id' => $artist->id
                 ];
 
-                //SendPinPromptEvent::dispatch($data);
+                SendPinPromptEvent::dispatch($data);
 
-                event(new \App\Events\SendPinPromptEvent($data));
+                //event(new \App\Events\SendPinPromptEvent($data));
 
                 //dd($data);
 
