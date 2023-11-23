@@ -197,7 +197,7 @@ class UssdController extends Controller
             if ($userJourney->step == 4) {
 
                 //$artist = Artist::find($SUBSCRIBER_INPUT);
-                dd((int)$userJourney->selected_award_category);
+                dd((int)$SUBSCRIBER_INPUT - 1);
                 $artist = AwardsCategory::find((int)$userJourney->selected_award_category)->artists[(int)$SUBSCRIBER_INPUT - 1];
 
                 if($artist == null){
