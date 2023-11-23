@@ -210,7 +210,7 @@ class UssdController extends Controller
                     ->header('cpRefId', $this->generateUniqueString());
                 }
 
-                //dd($artist);
+                dd($artist);
 
                 $response = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $token,
@@ -243,7 +243,7 @@ class UssdController extends Controller
 
                 $txn = $responseBody['transactionId'];
 
-                dd($txn);
+                //dd($txn);
 
                 $vote = VoterPayment::create([
                     'txn_id' => $txn,
