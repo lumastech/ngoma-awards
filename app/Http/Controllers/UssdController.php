@@ -198,9 +198,7 @@ class UssdController extends Controller
 
                 //$artist = Artist::find($SUBSCRIBER_INPUT);
                 //dd($userJourney);
-                $artist = AwardsCategory::find($userJourney->selected_award_category)->artists[$SUBSCRIBER_INPUT - 1];
-
-
+                $artist = AwardsCategory::find((int)$userJourney->selected_award_category)->artists[(int)$SUBSCRIBER_INPUT - 1];
 
                 if($artist == null){
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
@@ -210,7 +208,7 @@ class UssdController extends Controller
                     ->header('cpRefId', $this->generateUniqueString());
                 }
 
-                dd($artist);
+                //dd($artist);
 
                 $response = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $token,
