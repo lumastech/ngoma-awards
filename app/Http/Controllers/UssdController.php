@@ -201,7 +201,7 @@ class UssdController extends Controller
                 $cate = (int)$userJourney->selected_award_category;
                 $artistIndex = (int)$SUBSCRIBER_INPUT - 1;
 
-                $artist = AwardsCategory::find($cate)->artists[$artistIndex];
+                $artist = AwardsCategory::find($cate)->artists;
 
                 dd($artist);
 
