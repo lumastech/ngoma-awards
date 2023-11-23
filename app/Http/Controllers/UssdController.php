@@ -221,14 +221,8 @@ class UssdController extends Controller
 
                 //dd($artist);
 
-                $data = [
-                    'MSISDN' => $MSISDN,
-                    'artist_id' => $artist->id
-                ];
 
-                //SendPinPromptEvent::dispatch($data);
-
-                event(new \App\Events\SendPinPromptEvent($data));
+                //event(new \App\Events\SendPinPromptEvent($data));
 
                 //dd($data);
 
@@ -275,6 +269,13 @@ class UssdController extends Controller
                 $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
 
                 UserJourney::where('phone_number', '=', $MSISDN)->delete();
+
+                $data = [
+                    'MSISDN' => $MSISDN,
+                    'artist_id' => $artist->id
+                ];
+
+                SendPinPromptEvent::dispatch($data);
 
                 return response($response_msg, 200)
                     ->header('Freeflow', 'FB')
