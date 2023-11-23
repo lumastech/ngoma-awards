@@ -200,6 +200,8 @@ class UssdController extends Controller
                 //dd($userJourney);
                 $artist = AwardsCategory::find($userJourney->selected_award_category)->artists[$SUBSCRIBER_INPUT - 1];
 
+
+
                 if($artist == null){
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
                     return response('You selected an invalid artist option', 200)
@@ -241,7 +243,7 @@ class UssdController extends Controller
 
                 $txn = $responseBody['transactionId'];
 
-                //dd($txn);
+                dd($txn);
 
                 $vote = VoterPayment::create([
                     'txn_id' => $txn,
