@@ -31,21 +31,26 @@ class VerifyPayment extends Command
 
         $payments = \App\Models\VoterPayment::where('is_verified', false)->get();
 
-        $token = env('MOMO_TOKEN');
+        $token = $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae';
 
         foreach ($payments as $payment) {
             // Perform actions for users with balances less than 50
             // For example, send notifications, update the balance, etc.
             // You can use $user->id, $user->name, etc. to access user attributes
+            $this->info('Payment Object: ' . $payment);
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $token,
                 'Content-Type' => 'application/json',
-            ])->get('https://lipila-prod.hobbiton.app/transactions/status?transactionId=' . $payment->tnx_id);
+            ])->get('https://lipila-prod.hobbiton.app/transactions/status?transactionId=' . $payment->txn_id);
 
             // Accessing the response body as an array
             $responseBody = $response->json();
 
+            //$this->info('Verifying voter\'s payment...');
+
             $status = $responseBody['status'];
+
+            $this->info('Payment Status: ' . $status);
 
             if ($status == 'Pending') {
                 break;

@@ -215,6 +215,7 @@ class UssdController extends Controller
                 }
 
                 //dd($artist);
+                sleep(2);
 
                 $response = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $token,
