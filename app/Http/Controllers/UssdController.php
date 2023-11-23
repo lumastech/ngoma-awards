@@ -75,7 +75,7 @@ class UssdController extends Controller
                     $menu_options[] = $award->id . '.' . ' ' . $award->name;
                 }
 
-                $response_msg = 'Welcome to the Ngoma Awards, select award: ' . "\n";
+                $response_msg = 'Welcome to the Ngoma Awards, choose award: ' . "\n";
 
                 foreach ($menu_options as $key => $value) {
                     $response_msg .= "{$value} \n";
@@ -127,7 +127,7 @@ class UssdController extends Controller
 
                 $menu_options[] = '0. Cancel your progress';
 
-                $response_msg = 'Please select the category you want to vote for: ' . "\n";
+                $response_msg = 'Please choose the category you want to vote for: ' . "\n";
 
                 foreach ($menu_options as $key => $value) {
                     $response_msg .= "{$value}";
@@ -176,7 +176,7 @@ class UssdController extends Controller
 
                 $menu_options[] = '0. Cancel your progress';
 
-                $response_msg = 'Please select the artist you want to vote for: ' . "\n";
+                $response_msg = 'Please choose the artist you want to vote for: ' . "\n";
 
                 foreach ($menu_options as $key => $value) {
                     $response_msg .= "{$value}";
@@ -197,7 +197,7 @@ class UssdController extends Controller
             if ($userJourney->step == 4) {
 
                 //$artist = Artist::find($SUBSCRIBER_INPUT);
-                //dd($userJourney);
+                dd($userJourney);
                 $artist = AwardsCategory::find((int)$userJourney->selected_award_category)->artists[(int)$SUBSCRIBER_INPUT - 1];
 
                 if($artist == null){
