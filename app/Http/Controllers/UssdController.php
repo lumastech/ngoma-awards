@@ -147,7 +147,7 @@ class UssdController extends Controller
             if ($userJourney->step == 3) {
 
                 $award = Award::find($userJourney->selected_award);
-                $category = $award->categories[$SUBSCRIBER_INPUT - 1];
+                $category = $award->categories[(int)$SUBSCRIBER_INPUT - 1];
 
                 if($category == null){
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
@@ -196,14 +196,15 @@ class UssdController extends Controller
 
             if ($userJourney->step == 4) {
 
-                //$artist = Artist::find($SUBSCRIBER_INPUT);
-                //dd((int)$SUBSCRIBER_INPUT - 1);
-                $cate = (int)$userJourney->selected_award_category;
+                $award = Award::find($userJourney->selected_award);
+                $category = $award->categories[(int)$SUBSCRIBER_INPUT - 1];
+
+                // $cate = (int)$userJourney->selected_award_category;
                 $artistIndex = (int)$SUBSCRIBER_INPUT - 1;
 
-                $artist = AwardsCategory::find($cate)->artists[$artistIndex];
+                $artist = AwardsCategory::find($category->id)->artists[$artistIndex];
 
-                dd($artist);
+                //dd($artist);
 
                 if($artist == null){
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
