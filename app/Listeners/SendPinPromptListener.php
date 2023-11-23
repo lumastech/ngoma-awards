@@ -9,7 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 
-class SendPinPromptListener
+class SendPinPromptListener implements ShouldQueue
 {
     /**
      * Create the event listener.
