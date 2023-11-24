@@ -234,7 +234,7 @@ class UssdController extends Controller
                     // Your callback logic here
                     //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(4));
                     // This part runs after the response is sent
-
+                    sleep(5);
                     $amount = 2.00;
                     $currency = "ZMW";
                     $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
