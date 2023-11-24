@@ -37,23 +37,23 @@ class SendPinPromptListener
 
         //sleep(2);
 
-        // $response = Http::withHeaders([
-        //     'Authorization' => 'Bearer ' . $token,
-        //     'Content-Type' => 'application/json',
-        // ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
-        //     'currency' => $currency,
-        //     'amount' => $amount,
-        //     'accountNumber' => $data['MSISDN'],
-        //     'fullName' => "Ngoma Awards-{$data['MSISDN']}",
-        //     'phoneNumber' => $data['MSISDN'],
-        //     'email' => 'user@gmail.com',
-        //     'externalId' => now()->timestamp,
-        //     'narration' => 'Ngoma Awards',
-        // ]);
-
         $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
             'Content-Type' => 'application/json',
-        ])->get('https://ussd-payment.onrender.com/api/ussd?MSISDN=' . $data['MSISDN']);
+        ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
+            'currency' => $currency,
+            'amount' => $amount,
+            'accountNumber' => $data['MSISDN'],
+            'fullName' => "Ngoma Awards-{$data['MSISDN']}",
+            'phoneNumber' => $data['MSISDN'],
+            'email' => 'user@gmail.com',
+            'externalId' => now()->timestamp,
+            'narration' => 'Ngoma Awards',
+        ]);
+
+        // $response = Http::withHeaders([
+        //     'Content-Type' => 'application/json',
+        // ])->get('https://ussd-payment.onrender.com/api/ussd?MSISDN=' . $data['MSISDN']);
 
         // Accessing the response body as an array
         $responseBody = $response->json();
