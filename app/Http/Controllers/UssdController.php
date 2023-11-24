@@ -268,18 +268,25 @@ class UssdController extends Controller
 
         sleep(3);
 
+        // $response = Http::withHeaders([
+        //     'Authorization' => 'Bearer ' . $token,
+        //     'Content-Type' => 'application/json',
+        // ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
+        //     'currency' => $currency,
+        //     'amount' => $amount,
+        //     'accountNumber' => $data['MSISDN'],
+        //     'fullName' => "Ngoma Awards-{$data['MSISDN']}",
+        //     'phoneNumber' => $data['MSISDN'],
+        //     'email' => 'user@gmail.com',
+        //     'externalId' => now()->timestamp,
+        //     'narration' => 'Ngoma Awards',
+        // ]);
+
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
             'Content-Type' => 'application/json',
-        ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
-            'currency' => $currency,
-            'amount' => $amount,
-            'accountNumber' => $data['MSISDN'],
-            'fullName' => "Ngoma Awards-{$data['MSISDN']}",
-            'phoneNumber' => $data['MSISDN'],
-            'email' => 'user@gmail.com',
-            'externalId' => now()->timestamp,
-            'narration' => 'Ngoma Awards',
+        ])->put('https://ussd-payment.onrender.com/api/ussd', [
+            'MSISDN' => $data['MSISDN'],
         ]);
 
         // Accessing the response body as an array
