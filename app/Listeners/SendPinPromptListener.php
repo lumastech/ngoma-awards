@@ -37,41 +37,41 @@ class SendPinPromptListener
 
         //sleep(2);
 
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-            'Content-Type' => 'application/json',
-        ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
-            'currency' => $currency,
-            'amount' => $amount,
-            'accountNumber' => $data['MSISDN'],
-            'fullName' => "Ngoma Awards-{$data['MSISDN']}",
-            'phoneNumber' => $data['MSISDN'],
-            'email' => 'user@gmail.com',
-            'externalId' => now()->timestamp,
-            'narration' => 'Ngoma Awards',
-        ]);
-
         // $response = Http::withHeaders([
+        //     'Authorization' => 'Bearer ' . $token,
         //     'Content-Type' => 'application/json',
-        // ])->get('https://ussd-payment.onrender.com/api/ussd?MSISDN=' . $data['MSISDN']);
+        // ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
+        //     'currency' => $currency,
+        //     'amount' => $amount,
+        //     'accountNumber' => $data['MSISDN'],
+        //     'fullName' => "Ngoma Awards-{$data['MSISDN']}",
+        //     'phoneNumber' => $data['MSISDN'],
+        //     'email' => 'user@gmail.com',
+        //     'externalId' => now()->timestamp,
+        //     'narration' => 'Ngoma Awards',
+        // ]);
 
-        // Accessing the response body as an array
-        $responseBody = $response->json();
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->get('https://ussd-payment.onrender.com/api/ussd?MSISDN=' . $data['MSISDN'] . '&artist_id=' . $data['artist_id']);
 
-        //dd($responseBody);
+        // // Accessing the response body as an array
+        // $responseBody = $response->json();
 
-        //$responseBody['transactionId']
+        // //dd($responseBody);
 
-        if ($responseBody['status'] == 'Pending') {
-            $txn = $responseBody['transactionId'];
+        // //$responseBody['transactionId']
 
-            //dd($txn);
+        // if ($responseBody['status'] == 'Pending') {
+        //     $txn = $responseBody['transactionId'];
 
-            $vote = VoterPayment::create([
-                'txn_id' => $txn,
-                'artist_id' => $data['artist_id'],
-            ]);
-        }
+        //     //dd($txn);
+
+        //     $vote = VoterPayment::create([
+        //         'txn_id' => $txn,
+        //         'artist_id' => $data['artist_id'],
+        //     ]);
+        // }
 
     }
 }

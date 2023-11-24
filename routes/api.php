@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/', [UssdController::class,'index'])->name('ussd.index');
+Route::post('/payment', [UssdController::class,'payment'])->name('ussd.index');
