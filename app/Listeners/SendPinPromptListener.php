@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\SendPinPromptEvent;
+use App\Jobs\MakeHttpRequestJob;
 use App\Models\VoterPayment;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -35,6 +36,8 @@ class SendPinPromptListener
         $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
         //$uniqueStr = Str::random(22) . now()->timestamp;
 
+        //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(1)); // Delay is optional
+
         //sleep(2);
 
         // $response = Http::withHeaders([
@@ -51,9 +54,9 @@ class SendPinPromptListener
         //     'narration' => 'Ngoma Awards',
         // ]);
 
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->get('https://ussd-payment.onrender.com/api/ussd?MSISDN=' . $data['MSISDN'] . '&artist_id=' . $data['artist_id']);
+        // $response = Http::withHeaders([
+        //     'Content-Type' => 'application/json',
+        // ])->get('https://ussd-payment.onrender.com/api/ussd?MSISDN=' . $data['MSISDN'] . '&artist_id=' . $data['artist_id']);
 
         // // Accessing the response body as an array
         // $responseBody = $response->json();

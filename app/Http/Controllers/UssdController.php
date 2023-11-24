@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\SendPinPromptEvent;
+use App\Jobs\MakeHttpRequestJob;
 use App\Models\Artist;
 use App\Models\Award;
 use App\Models\AwardsCategory;
@@ -230,7 +231,9 @@ class UssdController extends Controller
 
                 //SendPinPromptEvent::dispatch($data);
 
-                event(new \App\Events\SendPinPromptEvent($data));
+               //event(new \App\Events\SendPinPromptEvent($data));
+
+               MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(4));
 
                 $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
 
