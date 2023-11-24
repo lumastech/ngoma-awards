@@ -29,17 +29,19 @@ class UssdController extends Controller
 
             $MSISDN = $request->query('MSISDN');
             $SUBSCRIBER_INPUT = $request->query('INPUT');
-            $amount = 2.00;
-            $currency = "ZMW";
-            $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
+            // $amount = 2.00;
+            // $currency = "ZMW";
+            // $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
 
             $userJourney = UserJourney::where('phone_number', $MSISDN)->first();
 
             if ($userJourney == null) {
                 $userJourney = UserJourney::create([
                     'phone_number' => $MSISDN,
+                    'selected_artist' => $this->generateUniqueString(),
                 ]);
             }
+
 
             $userJourney = UserJourney::find($userJourney->id);
 
@@ -89,7 +91,7 @@ class UssdController extends Controller
                 return response($response_msg, 200)
                     ->header('Freeflow', 'FC')
                     ->header('charge', 'N')
-                    ->header('cpRefId', $this->generateUniqueString());
+                    ->header('cpRefId', $userJourney->selected_artist);
 
             }
 
@@ -114,7 +116,7 @@ class UssdController extends Controller
                     return response('There are currently no categories in for this award', 200)
                     ->header('Freeflow', 'FB')
                     ->header('charge', 'N')
-                    ->header('cpRefId', $this->generateUniqueString());
+                    ->header('cpRefId', $userJourney->selected_artist);
                 }
 
                 $menu_options = [];
@@ -142,7 +144,7 @@ class UssdController extends Controller
                 return response($response_msg, 200)
                     ->header('Freeflow', 'FC')
                     ->header('charge', 'N')
-                    ->header('cpRefId', $this->generateUniqueString());
+                    ->header('cpRefId', $userJourney->selected_artist);
             }
 
             if ($userJourney->step == 3) {
@@ -155,7 +157,7 @@ class UssdController extends Controller
                     return response('You selected an invalid category option', 200)
                     ->header('Freeflow', 'FB')
                     ->header('charge', 'N')
-                    ->header('cpRefId', $this->generateUniqueString());
+                    ->header('cpRefId', $userJourney->selected_artist);
                 }
 
                 if(($category->artists)->isEmpty()){
@@ -163,7 +165,7 @@ class UssdController extends Controller
                     return response('There are currently no artists in for this category', 200)
                     ->header('Freeflow', 'FB')
                     ->header('charge', 'N')
-                    ->header('cpRefId', $this->generateUniqueString());
+                    ->header('cpRefId', $userJourney->selected_artist);
                 }
 
                 $menu_options = [];
@@ -191,7 +193,7 @@ class UssdController extends Controller
                 return response($response_msg, 200)
                     ->header('Freeflow', 'FC')
                     ->header('charge', 'N')
-                    ->header('cpRefId', $this->generateUniqueString());
+                    ->header('cpRefId', $userJourney->selected_artist);
 
             }
 
@@ -216,7 +218,7 @@ class UssdController extends Controller
                     return response('You selected an invalid artist option', 200)
                     ->header('Freeflow', 'FB')
                     ->header('charge', 'N')
-                    ->header('cpRefId', $this->generateUniqueString());
+                    ->header('cpRefId', $userJourney->selected_artist);
                 }
 
                 //dd($artist);
@@ -237,7 +239,7 @@ class UssdController extends Controller
                 return response($response_msg, 200)
                     ->header('Freeflow', 'FB')
                     ->header('charge', 'N')
-                    ->header('cpRefId', $this->generateUniqueString());
+                    ->header('cpRefId', $userJourney->selected_artist);
 
             }
 
