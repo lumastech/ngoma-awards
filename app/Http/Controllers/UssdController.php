@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\SendPinPromptEvent;
 use App\Jobs\MakeHttpRequestJob;
-use App\Models\Artist;
 use App\Models\Award;
 use App\Models\AwardsCategory;
 use App\Models\UserJourney;
@@ -42,7 +40,6 @@ class UssdController extends Controller
                     'selected_artist' => $this->generateUniqueString(),
                 ]);
             }
-
 
             $userJourney = UserJourney::find($userJourney->id);
 
@@ -104,20 +101,20 @@ class UssdController extends Controller
 
                 //dd($award->categories);
 
-                if($award == null){
+                if ($award == null) {
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
                     return response('You selected an invalid award option', 200)
-                    ->header('Freeflow', 'FB')
-                    ->header('charge', 'N')
-                    ->header('cpRefId', $this->generateUniqueString());
+                        ->header('Freeflow', 'FB')
+                        ->header('charge', 'N')
+                        ->header('cpRefId', $this->generateUniqueString());
                 }
 
-                if(($award->categories)->isEmpty()){
+                if (($award->categories)->isEmpty()) {
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
                     return response('There are currently no categories in for this award', 200)
-                    ->header('Freeflow', 'FB')
-                    ->header('charge', 'N')
-                    ->header('cpRefId', $userJourney->selected_artist);
+                        ->header('Freeflow', 'FB')
+                        ->header('charge', 'N')
+                        ->header('cpRefId', $userJourney->selected_artist);
                 }
 
                 $menu_options = [];
@@ -151,22 +148,22 @@ class UssdController extends Controller
             if ($userJourney->step == 3) {
 
                 $award = Award::find($userJourney->selected_award);
-                $category = $award->categories[(int)$SUBSCRIBER_INPUT - 1];
+                $category = $award->categories[(int) $SUBSCRIBER_INPUT - 1];
 
-                if($category == null){
+                if ($category == null) {
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
                     return response('You selected an invalid category option', 200)
-                    ->header('Freeflow', 'FB')
-                    ->header('charge', 'N')
-                    ->header('cpRefId', $userJourney->selected_artist);
+                        ->header('Freeflow', 'FB')
+                        ->header('charge', 'N')
+                        ->header('cpRefId', $userJourney->selected_artist);
                 }
 
-                if(($category->artists)->isEmpty()){
+                if (($category->artists)->isEmpty()) {
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
                     return response('There are currently no artists in for this category', 200)
-                    ->header('Freeflow', 'FB')
-                    ->header('charge', 'N')
-                    ->header('cpRefId', $userJourney->selected_artist);
+                        ->header('Freeflow', 'FB')
+                        ->header('charge', 'N')
+                        ->header('cpRefId', $userJourney->selected_artist);
                 }
 
                 $menu_options = [];
@@ -207,33 +204,74 @@ class UssdController extends Controller
                 $category = AwardsCategory::where('award_id', '=', $award->id)->first();
 
                 // $cate = (int)$userJourney->selected_award_category;
-                $artistIndex = (int)$SUBSCRIBER_INPUT - 1;
+                $artistIndex = (int) $SUBSCRIBER_INPUT - 1;
 
                 //$artist = AwardsCategory::find($category->id)->artists[$artistIndex];
                 $artist = $category->artists[$artistIndex];
 
                 //dd($artist);
 
-                if($artist == null){
+                if ($artist == null) {
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
                     return response('You selected an invalid artist option', 200)
-                    ->header('Freeflow', 'FB')
-                    ->header('charge', 'N')
-                    ->header('cpRefId', $userJourney->selected_artist);
+                        ->header('Freeflow', 'FB')
+                        ->header('charge', 'N')
+                        ->header('cpRefId', $userJourney->selected_artist);
                 }
 
                 //dd($artist);
 
                 $data = [
                     'MSISDN' => $MSISDN,
-                    'artist_id' => $artist->id
+                    'artist_id' => $artist->id,
                 ];
 
                 //SendPinPromptEvent::dispatch($data);
 
-               //event(new \App\Events\SendPinPromptEvent($data));
+                //event(new \App\Events\SendPinPromptEvent($data));
 
-               //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(4));
+                register_shutdown_function(function () use ($data) {
+                    // Your callback logic here
+                    //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(4));
+                    // This part runs after the response is sent
+
+                    $amount = 2.00;
+                    $currency = "ZMW";
+                    $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
+
+                    $response = Http::withHeaders([
+                        'Authorization' => 'Bearer ' . $token,
+                        'Content-Type' => 'application/json',
+                    ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
+                        'currency' => $currency,
+                        'amount' => $amount,
+                        'accountNumber' => $data['MSISDN'],
+                        'fullName' => "Ngoma Awards-{$data['MSISDN']}",
+                        'phoneNumber' => $data['MSISDN'],
+                        'email' => 'user@gmail.com',
+                        'externalId' => now()->timestamp,
+                        'narration' => 'Ngoma Awards',
+                    ]);
+                    // Accessing the response body as an array
+                    $responseBody = $response->json();
+
+                    //dd($responseBody);
+
+                    //$responseBody['transactionId']
+
+                    if ($responseBody['status'] == 'Pending') {
+
+                        $txn = $responseBody['transactionId'];
+
+                        //dd($txn);
+
+                        $vote = VoterPayment::create([
+                            'txn_id' => $txn,
+                            'artist_id' => $data['artist_id'],
+                        ]);
+                    }
+
+                });
 
                 $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
 
@@ -261,7 +299,8 @@ class UssdController extends Controller
         // ]);
     }
 
-    public function payment(Request $request){
+    public function payment(Request $request)
+    {
         $data = $request->all();
 
         $amount = 2.00;
@@ -316,8 +355,8 @@ class UssdController extends Controller
         ]);
     }
 
-
-    public function addAPI(Request $request){
+    public function addAPI(Request $request)
+    {
         $requestData = $request;
 
 
