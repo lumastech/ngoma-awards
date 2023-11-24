@@ -233,7 +233,7 @@ class UssdController extends Controller
 
                //event(new \App\Events\SendPinPromptEvent($data));
 
-               MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(4));
+               //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(4));
 
                 $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
 
@@ -311,6 +311,16 @@ class UssdController extends Controller
         }
 
         //dd($requestData);
+        return response()->json([
+            'message' => "Payment request sent successfully",
+        ]);
+    }
+
+
+    public function addAPI(Request $request){
+        $requestData = $request;
+
+
         return response()->json([
             'message' => "Payment request sent successfully",
         ]);
