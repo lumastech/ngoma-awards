@@ -221,61 +221,18 @@ class UssdController extends Controller
 
                 //dd($artist);
 
-
-                //event(new \App\Events\SendPinPromptEvent($data));
-
-                //dd($data);
-
-                // $response = Http::withHeaders([
-                //     'Authorization' => 'Bearer ' . $token,
-                //     'Content-Type' => 'application/json',
-                // ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
-                //     'currency' => $currency,
-                //     'amount' => $amount,
-                //     'accountNumber' => $MSISDN,
-                //     'fullName' => "Ngoma Awards-{$MSISDN}",
-                //     'phoneNumber' => $MSISDN,
-                //     'email' => 'user@gmail.com',
-                //     'externalId' => now()->timestamp,
-                //     'narration' => 'Ngoma Awards',
-                // ]);
-
-                // // Accessing the response body as an array
-                // $responseBody = $response->json();
-
-                // //dd($responseBody);
-
-                // //$responseBody['transactionId']
-
-                // if ($responseBody['status'] != 'Pending') {
-                //     $response_msg = 'Sorry there was an issue processing your payment. Try again later.';
-                //     return response($response_msg, 200)
-                //         ->header('Freeflow', 'FB')
-                //         ->header('charge', 'N')
-                //         ->header('cpRefId', $this->generateUniqueString());
-                // }
-
-                // $txn = $responseBody['transactionId'];
-
-                // //dd($txn);
-
-                // $vote = VoterPayment::create([
-                //     'txn_id' => $txn,
-                //     'artist_id' => $SUBSCRIBER_INPUT,
-                // ]);
-
-                //dd($vote);
-
-                $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
-
-                UserJourney::where('phone_number', '=', $MSISDN)->delete();
-
                 $data = [
                     'MSISDN' => $MSISDN,
                     'artist_id' => $artist->id
                 ];
 
-                SendPinPromptEvent::dispatch($data);
+                //SendPinPromptEvent::dispatch($data);
+
+                event(new \App\Events\SendPinPromptEvent($data));
+
+                $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
+
+                UserJourney::where('phone_number', '=', $MSISDN)->delete();
 
                 return response($response_msg, 200)
                     ->header('Freeflow', 'FB')

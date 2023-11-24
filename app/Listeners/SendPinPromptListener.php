@@ -9,7 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 
-class SendPinPromptListener implements ShouldQueue
+class SendPinPromptListener
 {
     /**
      * Create the event listener.
@@ -35,7 +35,9 @@ class SendPinPromptListener implements ShouldQueue
         $amount = 2.00;
         $currency = "ZMW";
         $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
-        $uniqueStr = Str::random(22) . now()->timestamp;
+        //$uniqueStr = Str::random(22) . now()->timestamp;
+
+        sleep(2);
 
                 $response = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $token,
