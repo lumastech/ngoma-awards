@@ -244,7 +244,7 @@ class UssdController extends Controller
             }
 
         } catch (\Exception $e) {
-            //dd($e);
+            dd($e);
             //dd('Reached here');
             $response_msg = 'Sorry there was an issue. Try again later.';
             return response($response_msg, 200)
@@ -256,6 +256,54 @@ class UssdController extends Controller
         // return response()->json([
         //     'message' => 'Sorry there was an issue on the server. Try again later.',
         // ]);
+    }
+
+    public function payment(Request $request){
+        $data = $request->all();
+
+        $amount = 2.00;
+        $currency = "ZMW";
+        $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
+        //$uniqueStr = Str::random(22) . now()->timestamp;
+
+        sleep(4);
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Content-Type' => 'application/json',
+        ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
+            'currency' => $currency,
+            'amount' => $amount,
+            'accountNumber' => $data['MSISDN'],
+            'fullName' => "Ngoma Awards-{$data['MSISDN']}",
+            'phoneNumber' => $data['MSISDN'],
+            'email' => 'user@gmail.com',
+            'externalId' => now()->timestamp,
+            'narration' => 'Ngoma Awards',
+        ]);
+
+        // Accessing the response body as an array
+        $responseBody = $response->json();
+
+        //dd($responseBody);
+
+        //$responseBody['transactionId']
+
+        if ($responseBody['status'] == 'Pending') {
+            $txn = $responseBody['transactionId'];
+
+            //dd($txn);
+
+            $vote = VoterPayment::create([
+                'txn_id' => $txn,
+                'artist_id' => $data['artist_id'],
+            ]);
+        }
+
+        //dd($requestData);
+        return response()->json([
+            'message' => "Payment request sent successfully",
+        ]);
     }
 
 }
