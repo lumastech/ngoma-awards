@@ -86,10 +86,9 @@ class UssdController extends Controller
                     'step' => 2,
                 ]);
 
-                return response($response_msg, 200)
-                    ->header('Freeflow', 'FC')
-                    ->header('charge', 'N')
-                    ->header('cpRefId', $userJourney->selected_artist);
+                return response()->json([
+                    'message' => $response_msg,
+                ]);
 
             }
 
