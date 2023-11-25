@@ -35,6 +35,10 @@ class UssdController extends Controller
 
             $userJourney = UserJourney::where('phone_number', $MSISDN)->first();
 
+            if ($RequestType == "1" && $userJourney != null) {
+                UserJourney::where('phone_number', '=', $MSISDN)->delete();
+            }
+
             if ($userJourney == null) {
                 $userJourney = UserJourney::create([
                     'phone_number' => $MSISDN,
@@ -94,7 +98,7 @@ class UssdController extends Controller
 
                 return response()->json([
                     'message' => $response_msg,
-                ]);
+                ])->header('ussd-step', $userJourney->step);
 
             }
 
@@ -154,7 +158,7 @@ class UssdController extends Controller
 
                 return response()->json([
                     'message' => $response_msg,
-                ]);
+                ])->header('ussd-step', $userJourney->step);
 
                 // return response($response_msg, 200)
                 //     ->header('Freeflow', 'FC')
@@ -215,7 +219,7 @@ class UssdController extends Controller
 
                 return response()->json([
                     'message' => $response_msg,
-                ]);
+                ])->header('ussd-step', $userJourney->step);
 
                 // return response($response_msg, 200)
                 //     ->header('Freeflow', 'FC')
@@ -269,7 +273,7 @@ class UssdController extends Controller
 
                 return response()->json([
                     'message' => $response_msg,
-                ]);
+                ])->header('ussd-step', $userJourney->step);
                 // return response($response_msg, 200)
                 //     ->header('Freeflow', 'FB')
                 //     ->header('charge', 'N')
