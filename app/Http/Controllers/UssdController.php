@@ -98,7 +98,7 @@ class UssdController extends Controller
 
                 return response()->json([
                     'message' => $response_msg,
-                ])->header('ussd-step', $userJourney->step);
+                ])->header('ussd-step', 2);
 
             }
 
@@ -158,7 +158,7 @@ class UssdController extends Controller
 
                 return response()->json([
                     'message' => $response_msg,
-                ])->header('ussd-step', $userJourney->step);
+                ])->header('ussd-step', 3);
 
                 // return response($response_msg, 200)
                 //     ->header('Freeflow', 'FC')
@@ -219,7 +219,7 @@ class UssdController extends Controller
 
                 return response()->json([
                     'message' => $response_msg,
-                ])->header('ussd-step', $userJourney->step);
+                ])->header('ussd-step', 4);
 
                 // return response($response_msg, 200)
                 //     ->header('Freeflow', 'FC')
@@ -228,7 +228,7 @@ class UssdController extends Controller
 
             }
 
-            if ($RequestType == "3") {
+            if ($RequestType == "4") {
 
                 $award = Award::find($userJourney->selected_award);
 
@@ -273,7 +273,7 @@ class UssdController extends Controller
 
                 return response()->json([
                     'message' => $response_msg,
-                ])->header('ussd-step', $userJourney->step);
+                ])->header('ussd-step', 5);
                 // return response($response_msg, 200)
                 //     ->header('Freeflow', 'FB')
                 //     ->header('charge', 'N')
