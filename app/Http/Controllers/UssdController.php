@@ -52,7 +52,7 @@ class UssdController extends Controller
 
             //dd($userJourney);
 
-            if ($SUBSCRIBER_INPUT == '0') {
+            if ($SUBSCRIBER_INPUT == '0' || $SUBSCRIBER_INPUT == 'b') {
 
                 $menu_options = [];
 
@@ -66,19 +66,19 @@ class UssdController extends Controller
                     UserJourney::where('phone_number', '=', $MSISDN)->delete();
                 }
 
-                return response()->json([
-                    'message' => 'Thank you for visiting Ngoma Awards.',
-                    'status' => 201
-                ]);
+                // return response()->json([
+                //     'message' => 'Thank you for visiting Ngoma Awards.',
+                //     'status' => 201
+                // ]);
 
-                // return response($response_msg, 200)
-                //     ->header('Freeflow', 'FB')
-                //     ->header('charge', 'N')
-                //     ->header('cpRefId', $this->generateUniqueString());
+                return response($response_msg, 200)
+                    ->header('Freeflow', 'FB')
+                    ->header('charge', 'N')
+                    ->header('cpRefId', $this->generateUniqueString());
 
             }
 
-            if ($RequestType == "1") {
+            if ($userJourney->step == 1) {
 
                 $awards = Award::all();
 
