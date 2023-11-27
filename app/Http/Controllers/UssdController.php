@@ -322,7 +322,7 @@ class UssdController extends Controller
             'externalId' => now()->timestamp,
             'narration' => 'Ngoma Awards',
         ]);
-
+        dd($response);
         // $response = Http::withHeaders([
         //     'Content-Type' => 'application/json',
         // ])->get('https://ussd-payment.onrender.com/api/ussd?MSISDN=' . $data['MSISDN'] . '&artist_id=' . $data['artist_id']);
