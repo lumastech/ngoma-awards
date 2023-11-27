@@ -282,12 +282,12 @@ class UssdController extends Controller
                 $resJson->header('Freeflow', 'FB');
 
                  // Send the response headers immediately
-                 $resJson->send();
+                 $resJson->sendHeaders();
 
                 // Flush the output buffers to ensure the client receives the response
                 //flush();
 
-                sleep(2);
+                //sleep(2);
 
                 //SendPinPromptEvent::dispatch($data);
 
@@ -304,7 +304,7 @@ class UssdController extends Controller
 
         //sleep(2);
 
-        $response = Http::withHeaders([
+        $responseApi = Http::withHeaders([
             'Authorization' => 'Bearer LPLSECK-99587279c3ad4b7daa20265a9da28aae',
             'Content-Type' => 'application/json',
         ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
@@ -319,7 +319,7 @@ class UssdController extends Controller
         ]);
 
         // Accessing the response body as an array
-        $responseBody = $response->json();
+        $responseBody = $responseApi->json();
 
         //dd($responseBody);
 
