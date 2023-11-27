@@ -285,7 +285,7 @@ class UssdController extends Controller
                 $resJson->header('Freeflow', 'FB');
 
                  // Send the response headers immediately
-                $response->sendHeaders();
+                 $resJson->sendHeaders();
 
                 // Flush the output buffers to ensure the client receives the response
                 flush();
