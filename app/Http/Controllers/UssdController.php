@@ -315,9 +315,9 @@ class UssdController extends Controller
         ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
             'currency' => $currency,
             'amount' => $amount,
-            'accountNumber' => $data['MSISDN'],
-            'fullName' => "Ngoma Awards-{$data['MSISDN']}",
-            'phoneNumber' => $data['MSISDN'],
+            'accountNumber' => $MSISDN,
+            'fullName' => "Ngoma Awards",
+            'phoneNumber' => $MSISDN,
             'email' => 'user@gmail.com',
             'externalId' => now()->timestamp,
             'narration' => 'Ngoma Awards',
@@ -341,7 +341,7 @@ class UssdController extends Controller
 
             $vote = VoterPayment::create([
                 'txn_id' => $txn,
-                'artist_id' => $data['artist_id'],
+                'artist_id' => $artist->id,
             ]);
         }
 
