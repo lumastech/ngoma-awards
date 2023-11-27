@@ -301,16 +301,16 @@ class UssdController extends Controller
                 /* Moved the payment Function to here */
 
                 $amount = 2.00;
-        $currency = "ZMW";
-        $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
-        $uniqueStr = Str::random(22) . now()->timestamp;
+            $currency = "ZMW";
+            $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
+            $uniqueStr = Str::random(22) . now()->timestamp;
 
-        //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(1)); // Delay is optional
+            //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(1)); // Delay is optional
 
         sleep(2);
 
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $token,
+            'Authorization' => 'Bearer LPLSECK-99587279c3ad4b7daa20265a9da28aae',
             'Content-Type' => 'application/json',
         ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
             'currency' => $currency,
