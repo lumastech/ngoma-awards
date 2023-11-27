@@ -307,7 +307,7 @@ class UssdController extends Controller
 
             //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(1)); // Delay is optional
 
-        sleep(2);
+        //sleep(2);
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer LPLSECK-99587279c3ad4b7daa20265a9da28aae',
@@ -328,7 +328,6 @@ class UssdController extends Controller
 
         //dd($responseBody);
 
-        //$responseBody['transactionId']
 
         if ($responseBody['status'] == 'Pending') {
             $txn = $responseBody['transactionId'];
