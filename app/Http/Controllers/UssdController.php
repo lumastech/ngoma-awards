@@ -343,7 +343,7 @@ class UssdController extends Controller
             }
 
         } catch (\Exception $e) {
-            //dd($e);
+            dd($e);
             //dd('Reached here');
             $response_msg = 'Sorry there was an issue. Try again later.';
             return response($response_msg, 200)
