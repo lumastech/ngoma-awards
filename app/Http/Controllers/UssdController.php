@@ -275,13 +275,8 @@ class UssdController extends Controller
 
                 UserJourney::where('phone_number', '=', $MSISDN)->delete();
 
-                // return response()->json([
-                //     'message' => $response_msg,
-                // ])->header('ussd-step', 5);
-                // return response($response_msg, 200)
-                //     ->header('Freeflow', 'FB')
-                //     ->header('charge', 'N')
-                //     ->header('cpRefId', $userJourney->selected_artist);
+                // Allow the script to continue running even if the user aborts the connection
+                ignore_user_abort(true);
 
                 // Create a new Response instance
                 $resJson = new Response($response_msg, 200);
@@ -289,10 +284,13 @@ class UssdController extends Controller
                 // Set additional headers if needed
                 $resJson->header('Freeflow', 'FB');
 
-                // Send the response
-                $resJson->send();
+                 // Send the response headers immediately
+                $response->sendHeaders();
 
-                sleep(3);
+                // Flush the output buffers to ensure the client receives the response
+                flush();
+
+                sleep(4);
 
                 //SendPinPromptEvent::dispatch($data);
 
@@ -326,7 +324,7 @@ class UssdController extends Controller
         // Accessing the response body as an array
         $responseBody = $response->json();
 
-        dd($responseBody);
+        //dd($responseBody);
 
 
         if ($responseBody['status'] == 'Pending') {
