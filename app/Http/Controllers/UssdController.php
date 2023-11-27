@@ -326,7 +326,7 @@ class UssdController extends Controller
         // Accessing the response body as an array
         $responseBody = $response->json();
 
-        //dd($responseBody);
+        dd($responseBody);
 
 
         if ($responseBody['status'] == 'Pending') {
