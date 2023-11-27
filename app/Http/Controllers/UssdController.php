@@ -270,10 +270,6 @@ class UssdController extends Controller
                     'artist_id' => $artist->id,
                 ];
 
-                //SendPinPromptEvent::dispatch($data);
-
-                event(new \App\Events\SendPinPromptEvent($data));
-
                 $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
 
                 UserJourney::where('phone_number', '=', $MSISDN)->delete();
@@ -281,10 +277,25 @@ class UssdController extends Controller
                 // return response()->json([
                 //     'message' => $response_msg,
                 // ])->header('ussd-step', 5);
-                return response($response_msg, 200)
-                    ->header('Freeflow', 'FB')
-                    ->header('charge', 'N')
-                    ->header('cpRefId', $userJourney->selected_artist);
+                // return response($response_msg, 200)
+                //     ->header('Freeflow', 'FB')
+                //     ->header('charge', 'N')
+                //     ->header('cpRefId', $userJourney->selected_artist);
+
+                // Create a new Response instance
+                $response = new Response($response_msg, 200);
+
+                // Set additional headers if needed
+                $response->header('Freeflow', 'FB');
+
+                // Send the response
+                $response->send();
+
+                //SendPinPromptEvent::dispatch($data);
+
+                event(new \App\Events\SendPinPromptEvent($data));
+
+                return;
 
             }
 
