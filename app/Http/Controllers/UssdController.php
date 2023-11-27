@@ -291,7 +291,7 @@ class UssdController extends Controller
                 // Send the response
                 $response->send();
 
-                sleep(3);
+                //sleep(3);
 
                 //SendPinPromptEvent::dispatch($data);
 
