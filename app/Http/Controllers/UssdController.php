@@ -275,9 +275,6 @@ class UssdController extends Controller
 
                 UserJourney::where('phone_number', '=', $MSISDN)->delete();
 
-                // Allow the script to continue running even if the user aborts the connection
-                ignore_user_abort(true);
-
                 // Create a new Response instance
                 $resJson = new Response($response_msg, 200);
 
@@ -285,12 +282,12 @@ class UssdController extends Controller
                 $resJson->header('Freeflow', 'FB');
 
                  // Send the response headers immediately
-                 $resJson->sendHeaders();
+                 $resJson->send();
 
                 // Flush the output buffers to ensure the client receives the response
                 flush();
 
-                sleep(4);
+                sleep(2);
 
                 //SendPinPromptEvent::dispatch($data);
 
