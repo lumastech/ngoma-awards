@@ -284,15 +284,15 @@ class UssdController extends Controller
                 //     ->header('cpRefId', $userJourney->selected_artist);
 
                 // Create a new Response instance
-                $response = new Response($response_msg, 200);
+                $resJson = new Response($response_msg, 200);
 
                 // Set additional headers if needed
-                $response->header('Freeflow', 'FB');
+                $resJson->header('Freeflow', 'FB');
 
                 // Send the response
-                $response->send();
+                $resJson->send();
 
-                //sleep(3);
+                sleep(3);
 
                 //SendPinPromptEvent::dispatch($data);
 
