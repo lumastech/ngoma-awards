@@ -285,7 +285,7 @@ class UssdController extends Controller
                  $resJson->send();
 
                 // Flush the output buffers to ensure the client receives the response
-                flush();
+                //flush();
 
                 sleep(2);
 
