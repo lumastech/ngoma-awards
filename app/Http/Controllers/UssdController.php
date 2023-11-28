@@ -284,15 +284,15 @@ class UssdController extends Controller
                 //     ->header('cpRefId', $userJourney->selected_artist);
 
                 // Create a new Response instance
-                //$response = new Response($response_msg, 200);
+                $response = new Response($response_msg, 200);
 
                 // Set additional headers if needed
-                //$response->header('Freeflow', 'FB');
+                $response->header('Freeflow', 'FB');
 
                 // Send the response
-                //$response->send();
+                $response->send();
 
-                //fastcgi_finish_request();
+                fastcgi_finish_request();
 
                 //sleep(3);
 
