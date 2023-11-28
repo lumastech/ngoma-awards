@@ -275,19 +275,24 @@ class UssdController extends Controller
 
                 UserJourney::where('phone_number', '=', $MSISDN)->delete();
 
+                // return response()->json([
+                //     'message' => $response_msg,
+                // ])->header('ussd-step', 5);
+                // return response($response_msg, 200)
+                //     ->header('Freeflow', 'FB')
+                //     ->header('charge', 'N')
+                //     ->header('cpRefId', $userJourney->selected_artist);
+
                 // Create a new Response instance
                 $response = new Response($response_msg, 200);
 
                 // Set additional headers if needed
                 $response->header('Freeflow', 'FB');
 
-                 // Send the response headers immediately
-                 $response->send();
+                // Send the response
+                $response->send();
 
-                // Flush the output buffers to ensure the client receives the response
-                //flush();
-
-                //sleep(2);
+                //sleep(3);
 
                 //SendPinPromptEvent::dispatch($data);
 
@@ -296,33 +301,38 @@ class UssdController extends Controller
                 /* Moved the payment Function to here */
 
                 $amount = 2.00;
-            $currency = "ZMW";
-            $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
-            $uniqueStr = Str::random(22) . now()->timestamp;
+        $currency = "ZMW";
+        $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
+        $uniqueStr = Str::random(22) . now()->timestamp;
 
-            //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(1)); // Delay is optional
+        //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(1)); // Delay is optional
 
         //sleep(2);
 
-        $responseApi = Http::withHeaders([
+        $responseAPI = Http::withHeaders([
             'Authorization' => 'Bearer LPLSECK-99587279c3ad4b7daa20265a9da28aae',
             'Content-Type' => 'application/json',
         ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
             'currency' => $currency,
             'amount' => $amount,
             'accountNumber' => $MSISDN,
-            'fullName' => "Ngoma Awards",
+            'fullName' => "Ngoma Awards-{$MSISDN}",
             'phoneNumber' => $MSISDN,
             'email' => 'user@gmail.com',
             'externalId' => now()->timestamp,
             'narration' => 'Ngoma Awards',
         ]);
+        //dd($response);
+        // $response = Http::withHeaders([
+        //     'Content-Type' => 'application/json',
+        // ])->get('https://ussd-payment.onrender.com/api/ussd?MSISDN=' . $data['MSISDN'] . '&artist_id=' . $data['artist_id']);
 
         // Accessing the response body as an array
-        $responseBody = $responseApi->json();
+        $responseBody = $responseAPI->json();
 
         //dd($responseBody);
 
+        //$responseBody['transactionId']
 
         if ($responseBody['status'] == 'Pending') {
             $txn = $responseBody['transactionId'];
