@@ -330,7 +330,7 @@ class UssdController extends Controller
         // Accessing the response body as an array
         $responseBody = $responseAPI->json();
 
-        //dd($responseBody);
+        dd($responseBody);
 
         //$responseBody['transactionId']
 
