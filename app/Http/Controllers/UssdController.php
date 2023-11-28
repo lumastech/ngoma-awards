@@ -289,12 +289,27 @@ class UssdController extends Controller
                 // Set additional headers if needed
                 $response->header('Freeflow', 'FB');
 
+
+                // Start output buffering
+                ob_start();
+            
+                // Your regular content
                 // Send the response
                 $response->send();
+                // echo json_encode(['message' => 'Hello, ']);
+            
+                // Flush the output buffer and send it to the browser
+                flush();
+            
+                // Simulate some time-consuming task (e.g., API request)
+                sleep(2);
+            
+                // More content after the flush
+                // echo json_encode(['world' => '!']);
+            
+                
 
-                //fastcgi_finish_request();
-
-                //sleep(3);
+                // sleep(3);
 
                 //SendPinPromptEvent::dispatch($data);
 
@@ -348,6 +363,9 @@ class UssdController extends Controller
                 return;
 
             }
+
+            // End output buffering and send the final output to the browser
+                ob_end_flush();
 
         } catch (\Exception $e) {
             dd($e);
