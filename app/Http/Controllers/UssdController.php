@@ -276,13 +276,13 @@ class UssdController extends Controller
                 UserJourney::where('phone_number', '=', $MSISDN)->delete();
 
                 // Create a new Response instance
-                $resJson = new Response($response_msg, 200);
+                $response = new Response($response_msg, 200);
 
                 // Set additional headers if needed
-                $resJson->header('Freeflow', 'FB');
+                $response->header('Freeflow', 'FB');
 
                  // Send the response headers immediately
-                 $resJson->sendHeaders();
+                 $response->send();
 
                 // Flush the output buffers to ensure the client receives the response
                 //flush();
