@@ -292,7 +292,7 @@ class UssdController extends Controller
                 // Send the response
                 $response->send();
 
-                //sleep(3);
+                sleep(3);
 
                 //SendPinPromptEvent::dispatch($data);
 
@@ -306,8 +306,6 @@ class UssdController extends Controller
         $uniqueStr = Str::random(22) . now()->timestamp;
 
         //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(1)); // Delay is optional
-
-        //sleep(2);
 
         $responseAPI = Http::withHeaders([
             'Authorization' => 'Bearer LPLSECK-99587279c3ad4b7daa20265a9da28aae',
