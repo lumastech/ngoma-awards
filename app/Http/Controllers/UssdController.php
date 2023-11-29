@@ -89,7 +89,13 @@ class UssdController extends Controller
                     $menu_options[] = $award->id . '.' . ' ' . $award->name;
                 }
 
-                $response_msg = 'Welcome to the Ngoma Awards, choose award: ' . "\n";
+               $response_msg = 'We wish to sincerely apologise for the system failure that we have encountered on our Airtel and MTN voting platforms.
+
+Kindly be advised that this failure will not in any way affect the votes. However, the Zamtel voting platform is still active, keep the votes coming.
+
+Be further assured that the technical team is currently working to resolve the failure. Thank for your continued co-operation and support. ';
+
+                $response_msg_d = 'Welcome to the Ngoma Awards, choose award: ' . "\n";
 
                 foreach ($menu_options as $key => $value) {
                     $response_msg .= "{$value} \n";
@@ -104,7 +110,7 @@ class UssdController extends Controller
                 // ])->header('ussd-step', 2);
 
                 return response($response_msg, 200)
-                    ->header('Freeflow', 'FC')
+                    ->header('Freeflow', 'FB')
                     ->header('charge', 'N')
                     ->header('cpRefId', $this->generateUniqueString());
 
