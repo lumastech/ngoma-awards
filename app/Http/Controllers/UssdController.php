@@ -288,7 +288,9 @@ Be further assured that the technical team is currently working to resolve the f
                 //event(new \App\Events\SendPinPromptEvent($data));
                 MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(1)); // Delay is optional
 
-                return $response->send();
+                $response->send();
+
+                return;
             }
         } catch (\Exception $e) {
             dd($e);
