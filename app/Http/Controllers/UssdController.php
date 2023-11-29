@@ -95,11 +95,12 @@ Kindly be advised that this failure will not in any way affect the votes. Howeve
 
 Be further assured that the technical team is currently working to resolve the failure. Thank for your continued co-operation and support. ';
 
-                $response_msg_d = 'Welcome to the Ngoma Awards, choose award: ' . "\n";
+                /*
+                $msg_d = 'Welcome to the Ngoma Awards, choose award: ' . "\n";
 
                 foreach ($menu_options as $key => $value) {
                     $response_msg .= "{$value} \n";
-                }
+                }*/
 
                 UserJourney::where('phone_number', '=', $MSISDN)->update([
                     'step' => 2,
