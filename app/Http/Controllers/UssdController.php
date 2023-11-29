@@ -252,6 +252,10 @@ class UssdController extends Controller
                 // Send the response
                 $response->send();
 
+                if (function_exists('fastcgi_finish_request')) {
+    fastcgi_finish_request();
+}
+
                 $award = Award::find($userJourney->selected_award);
 
                 //$category = $award->categories[(int)$SUBSCRIBER_INPUT - 1];
