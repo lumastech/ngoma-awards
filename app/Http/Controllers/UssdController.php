@@ -247,6 +247,8 @@ class UssdController extends Controller
 
                 // Set additional headers if needed
                 $response->header('Freeflow', 'FB');
+
+                $response->header('Connection', 'close');
             
                 // Your regular content
                 // Send the response
