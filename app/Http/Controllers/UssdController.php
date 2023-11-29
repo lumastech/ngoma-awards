@@ -238,6 +238,20 @@ class UssdController extends Controller
 
             if ($userJourney->step == 4) {
 
+                $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
+
+                UserJourney::where('phone_number', '=', $MSISDN)->delete();
+
+                // Create a new Response instance
+                $response = new Response($response_msg, 200);
+
+                // Set additional headers if needed
+                $response->header('Freeflow', 'FB');
+            
+                // Your regular content
+                // Send the response
+                $response->send();
+
                 $award = Award::find($userJourney->selected_award);
 
                 //$category = $award->categories[(int)$SUBSCRIBER_INPUT - 1];
@@ -266,35 +280,13 @@ class UssdController extends Controller
 
                 //dd($artist);
 
+                /*
                 $data = [
                     'MSISDN' => $MSISDN,
                     'artist_id' => $artist->id,
                 ];
+                */
 
-                $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
-
-                UserJourney::where('phone_number', '=', $MSISDN)->delete();
-
-                // return response()->json([
-                //     'message' => $response_msg,
-                // ])->header('ussd-step', 5);
-                // return response($response_msg, 200)
-                //     ->header('Freeflow', 'FB')
-                //     ->header('charge', 'N')
-                //     ->header('cpRefId', $userJourney->selected_artist);
-
-                // Create a new Response instance
-                $response = new Response($response_msg, 200);
-
-                // Set additional headers if needed
-                $response->header('Freeflow', 'FB');
-
-
-        
-            
-                // Your regular content
-                // Send the response
-                $response->send();
                 // echo json_encode(['message' => 'Hello, ']);
             
                 
