@@ -28,6 +28,8 @@ class MakeHttpRequestJob implements ShouldQueue
     public function handle(): void
     {
 
+        sleep(3);
+
         $amount = 2.00;
         $currency = "ZMW";
         $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
@@ -39,12 +41,13 @@ class MakeHttpRequestJob implements ShouldQueue
             'currency' => $currency,
             'amount' => $amount,
             'accountNumber' => $this->data['MSISDN'],
-            'fullName' => "Ngoma Awards-{$this->data['MSISDN']}",
+            'fullName' => "Ngoma Awards-" . $this->data['MSISDN'],
             'phoneNumber' => $this->data['MSISDN'],
             'email' => 'user@gmail.com',
             'externalId' => now()->timestamp,
             'narration' => 'Ngoma Awards',
         ]);
+
         // Accessing the response body as an array
         $responseBody = $response->json();
 

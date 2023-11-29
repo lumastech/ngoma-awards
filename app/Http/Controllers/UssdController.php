@@ -76,7 +76,6 @@ class UssdController extends Controller
                     ->header('Freeflow', 'FB')
                     ->header('charge', 'N')
                     ->header('cpRefId', $this->generateUniqueString());
-
             }
 
             if ($userJourney->step == 1) {
@@ -89,7 +88,7 @@ class UssdController extends Controller
                     $menu_options[] = $award->id . '.' . ' ' . $award->name;
                 }
 
-               $response_msg = 'We wish to sincerely apologise for the system failure that we have encountered on our Airtel and MTN voting platforms.
+                $response_msg = 'We wish to sincerely apologise for the system failure that we have encountered on our Airtel and MTN voting platforms.
 
 Kindly be advised that this failure will not in any way affect the votes. However, the Zamtel voting platform is still active, keep the votes coming.
 
@@ -114,7 +113,6 @@ Be further assured that the technical team is currently working to resolve the f
                     ->header('Freeflow', 'FB')
                     ->header('charge', 'N')
                     ->header('cpRefId', $this->generateUniqueString());
-
             }
 
             //dd($userJourney);
@@ -240,30 +238,9 @@ Be further assured that the technical team is currently working to resolve the f
                     ->header('Freeflow', 'FC')
                     ->header('charge', 'N')
                     ->header('cpRefId', $userJourney->selected_artist);
-
             }
 
             if ($userJourney->step == 4) {
-
-                $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
-
-                UserJourney::where('phone_number', '=', $MSISDN)->delete();
-
-                // Create a new Response instance
-                $response = new Response($response_msg, 200);
-
-                // Set additional headers if needed
-                $response->header('Freeflow', 'FB');
-
-                $response->header('Connection', 'close');
-            
-                // Your regular content
-                // Send the response
-                $response->send();
-
-                if (function_exists('fastcgi_finish_request')) {
-    fastcgi_finish_request();
-}
 
                 $award = Award::find($userJourney->selected_award);
 
@@ -291,83 +268,28 @@ Be further assured that the technical team is currently working to resolve the f
                         ->header('cpRefId', $userJourney->selected_artist);
                 }
 
-                //dd($artist);
 
-                /*
                 $data = [
                     'MSISDN' => $MSISDN,
                     'artist_id' => $artist->id,
                 ];
-                */
 
-                // echo json_encode(['message' => 'Hello, ']);
-            
-                
-            
-                // Simulate some time-consuming task (e.g., API request)
-                sleep(2);
-            
-                // More content after the flush
-                // echo json_encode(['world' => '!']);
-            
-                
+                $response_msg = 'Thank you for your vote, you will soon receive a prompt for a pin shortly.';
 
-                // sleep(3);
+                UserJourney::where('phone_number', '=', $MSISDN)->delete();
+
+                // Create a new Response instance
+                $response = new Response($response_msg, 200);
+
+                // Set additional headers if needed
+                $response->header('Freeflow', 'FB');
 
                 //SendPinPromptEvent::dispatch($data);
-
                 //event(new \App\Events\SendPinPromptEvent($data));
+                MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(1)); // Delay is optional
 
-                /* Moved the payment Function to here */
-
-                $amount = 2.00;
-        $currency = "ZMW";
-        $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
-        $uniqueStr = Str::random(22) . now()->timestamp;
-
-        //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(1)); // Delay is optional
-
-        $responseAPI = Http::withHeaders([
-            'Authorization' => 'Bearer LPLSECK-99587279c3ad4b7daa20265a9da28aae',
-            'Content-Type' => 'application/json',
-        ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
-            'currency' => $currency,
-            'amount' => $amount,
-            'accountNumber' => $MSISDN,
-            'fullName' => "Ngoma Awards-{$MSISDN}",
-            'phoneNumber' => $MSISDN,
-            'email' => 'user@gmail.com',
-            'externalId' => now()->timestamp,
-            'narration' => 'Ngoma Awards',
-        ]);
-        //dd($response);
-        // $response = Http::withHeaders([
-        //     'Content-Type' => 'application/json',
-        // ])->get('https://ussd-payment.onrender.com/api/ussd?MSISDN=' . $data['MSISDN'] . '&artist_id=' . $data['artist_id']);
-
-        // Accessing the response body as an array
-        $responseBody = $responseAPI->json();
-
-        //dd($responseBody);
-
-        //$responseBody['transactionId']
-
-        if ($responseBody['status'] == 'Pending') {
-            $txn = $responseBody['transactionId'];
-
-            //dd($txn);
-
-            $vote = VoterPayment::create([
-                'txn_id' => $txn,
-                'artist_id' => $artist->id,
-            ]);
-        }
-
-                return;
-
+                return $response->send();
             }
-
-
         } catch (\Exception $e) {
             dd($e);
             //dd('Reached here');
@@ -438,15 +360,51 @@ Be further assured that the technical team is currently working to resolve the f
             'message' => "Payment request sent successfully",
         ]);
     }
-
-    public function addAPI(Request $request)
-    {
-        $requestData = $request;
-
-
-        return response()->json([
-            'message' => "Payment request sent successfully",
-        ]);
-    }
-
 }
+
+/* Moved the payment Function to here */
+
+                /*
+
+                $amount = 2.00;
+                $currency = "ZMW";
+                $token = 'LPLSECK-99587279c3ad4b7daa20265a9da28aae'; // Replace with your actual token environment variable
+                $uniqueStr = Str::random(22) . now()->timestamp;
+
+                //MakeHttpRequestJob::dispatch($data)->delay(now()->addSeconds(1)); // Delay is optional
+
+                $responseAPI = Http::withHeaders([
+                    'Authorization' => 'Bearer LPLSECK-99587279c3ad4b7daa20265a9da28aae',
+                    'Content-Type' => 'application/json',
+                ])->post('https://lipila-prod.hobbiton.app/transactions/mobile-money', [
+                    'currency' => $currency,
+                    'amount' => $amount,
+                    'accountNumber' => $MSISDN,
+                    'fullName' => "Ngoma Awards-{$MSISDN}",
+                    'phoneNumber' => $MSISDN,
+                    'email' => 'user@gmail.com',
+                    'externalId' => now()->timestamp,
+                    'narration' => 'Ngoma Awards',
+                ]);
+                //dd($response);
+                // $response = Http::withHeaders([
+                //     'Content-Type' => 'application/json',
+                // ])->get('https://ussd-payment.onrender.com/api/ussd?MSISDN=' . $data['MSISDN'] . '&artist_id=' . $data['artist_id']);
+
+                // Accessing the response body as an array
+                $responseBody = $responseAPI->json();
+
+                //dd($responseBody);
+
+                //$responseBody['transactionId']
+
+                if ($responseBody['status'] == 'Pending') {
+                    $txn = $responseBody['transactionId'];
+
+                    //dd($txn);
+
+                    $vote = VoterPayment::create([
+                        'txn_id' => $txn,
+                        'artist_id' => $artist->id,
+                    ]);
+                } */
