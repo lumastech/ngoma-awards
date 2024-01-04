@@ -289,23 +289,19 @@ class UssdController extends Controller
                 // Set additional headers if needed
                 $response->header('Freeflow', 'FB');
 
-
-        
-            
-                // Your regular content
                 // Send the response
                 $response->send();
                 // echo json_encode(['message' => 'Hello, ']);
-            
-                
-            
+
+
+
                 // Simulate some time-consuming task (e.g., API request)
                 sleep(2);
-            
+
                 // More content after the flush
                 // echo json_encode(['world' => '!']);
-            
-                
+
+
 
                 // sleep(3);
 
